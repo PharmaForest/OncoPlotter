@@ -5,7 +5,6 @@ A SAS package to create figures commonly created in oncology studies
 The repo will be collaborative work.
 # `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-1"></a> 
 
-Program:     kaplan_meier_plot.txt<br>
 Macro:       %kaplan_meier_plot<br>
 
 Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETEST in SAS.<br>
