@@ -36,6 +36,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 *
  Example usage:<br>
   %kaplan_meier_plot( );<br>
+<img width="565" alt="Image" src="https://github.com/user-attachments/assets/df08440b-b38d-42d6-b8e5-24b13e253b27" />
  
    %kaplan_meier_plot(<br>
        data = dummy_adtte,<br>
