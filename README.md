@@ -55,9 +55,11 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
        Group_linepattern_list = %nrquote(solid dash longdash shortdash),<br>
        XLABEL = %nrquote(Survival Time (Month)),<br>
        YLABEL = %nrquote(Probability),<br>
-       AxisValues = %nrquote(0 to 24 by 4),<br>
-       Generate_Code = Y<br>
+       AxisValues = %nrquote(0 to 15 by 1),<br>
+       Generate_Code = N<br>
    );<br>
+   <img width="562" alt="Image" src="https://github.com/user-attachments/assets/8859997d-73d8-437f-8853-ad36283f7c35" />
+<br>
 
  Author:     Yutaka Morioka<br>
  Date:        2025-06-24<br>
