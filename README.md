@@ -3,7 +3,7 @@ A SAS package to create figures commonly created in oncology studies
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
 The repo will be collaborative work.
-# `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-1"></a> 
+# `%kaplan_meier_plot</a> 
 <br>
 Macro:       %kaplan_meier_plot<br>
 <br>
