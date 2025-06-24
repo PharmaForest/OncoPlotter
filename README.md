@@ -33,9 +33,10 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
    YLABEL=                Label for the Y-axis (e.g., "Probability of Survival")<br>
    AxisValues=            Tick marks for the X-axis (e.g., "0 to 16 by 2")<br>
    Generate_Code=         Option to output MFILE-generated SAS code (Y/N)<br>
-*
+<br>
  Example usage:<br>
- ** %kaplan_meier_plot( );<br>**
+** %kaplan_meier_plot( );**
+ <br>
 <img width="565" alt="Image" src="https://github.com/user-attachments/assets/df08440b-b38d-42d6-b8e5-24b13e253b27" />
 <br>
 <img width="887" alt="Image" src="https://github.com/user-attachments/assets/0ae04e03-d763-4cc1-9207-451fe55338e7" />
