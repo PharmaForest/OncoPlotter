@@ -41,7 +41,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 <br>
 <img width="887" alt="Image" src="https://github.com/user-attachments/assets/0ae04e03-d763-4cc1-9207-451fe55338e7" />
 <br>
-👆When run without specifying anything, it automatically draws with dummy data and even opens plain SAS code as text.(<br>
+👆When run without specifying anything, it automatically draws with dummy data and even opens plain SAS code as text.<br>
  <br>
  %kaplan_meier_plot(<br>
        data = dummy_adtte,<br>
@@ -57,7 +57,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
        YLABEL = %nrquote(Probability),<br>
        AxisValues = %nrquote(0 to 24 by 4),<br>
        Generate_Code = Y<br>
-   );<br>**
+   );<br>
 
  Author:     Yutaka Morioka<br>
  Date:        2025-06-24<br>
