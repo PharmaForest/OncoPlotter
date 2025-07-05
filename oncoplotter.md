@@ -9,21 +9,25 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.1.0
-- Generated: 2025-06-24T16:16:18
+- Version: 0.2.0
+- Generated: 2025-07-05T20:06:11
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*2193072122ED33A32245ACE7CE434DB3A11E10AA055CD44A98096D3EBD2192AA` for this version
-- Content SHA256: `C*30FEA053838A83A4517EA842E4B2A5D3AE54741060912823A3D1060940911662` for this version
+- File SHA256: `F*7ED631608FC27B528F4012E0E49B11ED48E560F73E8DB1805A044290ADD20DA8` for this version
+- Content SHA256: `C*B1C8F38DB561562A94D1F1F5918883CCD739FA6084F27F020A2D456755FE5F38` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.1.0`;
+# The `OncoPlotter` package, version: `0.2.0`;
   
 ---
  
-A SAS package to create figures commonly created in oncology studies
+
+A SAS package to create figures commonly created in oncology studies.
+ - %kaplan_meier_plot
+ - %swimmer_plot
+
   
 ---
  
@@ -45,14 +49,37 @@ Required SAS Components:
 # The `OncoPlotter` package content
 The `OncoPlotter` package consists of the following content:
  
-1. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-1 )
+1. [`01_adsl_dummy` data ](#01adsldummy-data-1 )
+2. [`02_adrs_dummy` data ](#02adrsdummy-data-2 )
+3. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-3 )
+4. [`%sp_change()` macro ](#spchange-macros-4 )
+5. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-5 )
+6. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-6 )
+7. [`%sp_split_plot()` macro ](#spsplitplot-macros-7 )
+8. [`%swimmer_plot()` macro ](#swimmerplot-macros-8 )
   
  
-2. [License note](#license)
+9. [License note](#license)
   
 ---
  
-## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-1"></a> ######
+## `01_adsl_dummy` data <a name="01adsldummy-data-1"></a> ######
+
+ ## Create dummy datasets
+   ADSL_DUMMY
+
+  
+---
+ 
+## `02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
+
+ ## Create dummy datasets
+   ADRS_DUMMY
+
+  
+---
+ 
+## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-3"></a> ######
 
 * Program:     kaplan_meier_plot.txt
 * Macro:       %kaplan_meier_plot
@@ -104,6 +131,131 @@ The `OncoPlotter` package consists of the following content:
 *
 * Author:     Yutaka Morioka
 * Date:        2025-06-24
+* Version:     0.1
+
+  
+---
+ 
+## `%sp_change()` macro <a name="spchange-macros-4"></a> ######
+
+This is internal utility macro used in `%swimmer_plot`.
+
+Purpose:
+Change separater of | to "","" (e.g. CR | PR | SD   ->   "CR","PR","SD")
+
+* Author:     Ryo Nakaya
+* Date:        2025-07-05
+* Version:     0.1
+
+  
+---
+ 
+## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-5"></a> ######
+
+This is internal utility macro used in `%swimmer_plot`.
+
+Purpose:
+Create format for groupvar (e.g. 
+	proc format ;
+		value groupf
+		1 = "Stage I"
+		2 = "Stage II"
+		;
+	run ;
+
+* Author:     Ryo Nakaya
+* Date:        2025-07-05
+* Version:     0.1
+
+  
+---
+ 
+## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-6"></a> ######
+
+This is internal utility macro used in `%swimmer_plot`.
+
+Purpose:
+Create format for response (e.g. 
+	proc format ;
+		value respf
+		1 = "CR"
+		2 = "PR"
+		;
+	run ;
+
+* Author:     Ryo Nakaya
+* Date:        2025-07-05
+* Version:     0.1
+
+  
+---
+ 
+## `%sp_split_plot()` macro <a name="spsplitplot-macros-7"></a> ######
+
+This is internal macro used in `%swimmer_plot`.
+This macro is main functionality including sgplot.
+
+* Author:     Ryo Nakaya
+* Date:        2025-07-05
+* Version:     0.1
+
+  
+---
+ 
+## `%swimmer_plot()` macro <a name="swimmerplot-macros-8"></a> ######
+
+This is internal macro used in `%swimmer_plot`.
+This macro is main functionality including sgplot.
+
+### Sample code
+Datasets(adsl_dummy and adrs_dummy) are created in WORK library when OncoPlotter is installed.
+You can test swimmer_plot macro usin the datasets.
+
+~~~sas
+%Swimmer_Plot(
+	adrs			= adrs_dummy,
+	adsl			= adsl_dummy,
+	whr_adrs		= PARAM="Overall Response" and PARQUAL="IRC",
+	whr_adsl		= FASFL="Y",
+	eotvar 		= EOTSTT,
+	lstvstdt		= ,
+	crprN 		= 1 2,
+	durable		= Y,
+	durableLabel = Durable Period,
+	groupvar 		= STAGEN,
+	groupLabel 	= Disease Stage,
+	groupN 		= 1 2 3 4 5,
+	groupC 		= Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
+	responseN 	= 1 2 3 4,
+	responseC 	= CR | PR | SD | PD,
+	responseLabel 	= Response,
+	deathLabel 		= Death,
+	ongoingLabel 	= Treatment Ongoing,
+	nperpage 	= 20,
+	width 		= 640,
+	height		= 480,
+	subjidOn 	= Y,
+	colorStyle = OncoPlotter,
+	groupColor = ,
+	markerColor = ,
+	markerSymbol = ,
+	title = Swimmer%str(%')s Plot,
+	ytitle 		= Subject,
+	xtitle 		= Days from treatment,
+	xvalues 	= 0 to 40 by 4,
+	nolegend = ,
+	interval = week
+)
+~~~
+
+### prerequisites
+ - Response data		: BDS ADaM dataset 
+		(USUBJID, AVAL, ADT, ADY)
+ - Subject-level-data	: ADSL ADaM dataset
+		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
+
+* Author:     Ryo Nakaya
+* Date:        2025-07-05
 * Version:     0.1
 
   
