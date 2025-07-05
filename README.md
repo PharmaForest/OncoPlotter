@@ -74,7 +74,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 <br>
 Macro:       %swimmer_plot<br>
 <br>
-Purpose:     This macro generates swimmer's plot using proc sgplot. <br> 
+Purpose:     This macro generates swimmer's plot using proc sgplot with modern views which address not only CSR figures but also publication figures. <br> 
             You can run the example code below since ADSL_DUMMY and ADRS_DUMMY datasets are created under WORK library when you load OncoPlotter.  
              
 ~~~sas
