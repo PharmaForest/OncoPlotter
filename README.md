@@ -1,8 +1,13 @@
-# OncoPlotter
+# OncoPlotter (Latest version 0.2.0 on 5July2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
-The repo will be collaborative work.
+The repository is a collaborative project.
+ - **%kaplan_meier_plot**
+ - **%swimmer_plot**
+
+---
+
 # `%kaplan_meier_plot</a> 
 <br>
 Macro:       %kaplan_meier_plot<br>
@@ -65,6 +70,58 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
  Date:        2025-06-24<br>
  Version:     0.1<br>
 
-  
+# `%swimmer_plot</a> 
+<br>
+Macro:       %swimmer_plot<br>
+<br>
+Purpose:     This macro generates swimmer's plot using proc sgplot. <br> 
+            You can run the example code below since ADSL_DUMMY and ADRS_DUMMY datasets are created under WORK library when you load OncoPlotter.  
+             
+~~~sas
+%Swimmer_Plot(
+	adrs            = adrs_dummy,
+	adsl            = adsl_dummy,
+	whr_adrs        = PARAM="Overall Response" and PARQUAL="IRC",
+	whr_adsl        = FASFL="Y",
+	eotvar          = EOTSTT,
+	lstvstdt        = ,
+	crprN           = 1 2,
+	durable         = Y,
+	durableLabel    = Durable Period,
+	groupvar        = STAGEN,
+	groupLabel      = Disease Stage,
+	groupN          = 1 2 3 4 5,
+	groupC          = Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
+	responseN       = 1 2 3 4,
+	responseC       = CR | PR | SD | PD,
+	responseLabel   = Response,
+	deathLabel      = Death,
+	ongoingLabel    = Treatment Ongoing,
+	nperpage        = 20,
+	width           = 640,
+	height          = 480,
+	subjidOn        = Y,
+	colorStyle      = OncoPlotter, /* Choose from OncoPlotter, Salmon, Kawaii, Kyoto, Osaka */
+	groupColor      = ,
+	markerColor     = ,
+	markerSymbol    = ,
+	title           = Swimmer%str(%')s Plot,
+	ytitle          = Subject,
+	xtitle          = Days from treatment,
+	xvalues         = 0 to 40 by 4,
+	nolegend        = ,
+	interval        = week /* null for Day. Choose from Week, Month to show week or month view */
+)
+~~~
+
+
 ---
  
+## Version history  
+0.2.0(5July2025)  : added swimmer plot  
+0.1.0(24June2025)	: Initial version
+
+## What is SAS Packages?
+OncoPlotter is built on top of **SAS Packages framework(SPF)** developed by Bartosz Jablonski.  
+For more information about SAS Packages framework, see [SAS_PACKAGES](https://github.com/yabwon/SAS_PACKAGES).  
+You can also find more SAS Packages(SASPACs) in [SASPAC](https://github.com/SASPAC).
