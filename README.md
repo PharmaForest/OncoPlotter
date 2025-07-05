@@ -113,7 +113,16 @@ Purpose:     This macro generates swimmer's plot using proc sgplot. <br>
 	interval        = week /* null for Day. Choose from Week, Month to show week or month view */
 )
 ~~~
+**Example 1. colorStyle=OncoPlotter (with durable line)**  
+<img width="300" alt="Image" src="./.github/SwimmerPlot_OncoPlotter.png" />  
+**Example 2. colorStyle=Kyoto (without durable line)**  
+<img width="300" alt="Image" src="./.github/SwimmerPlot_Kyoto.png" />  
+**Example 3. colorStyle=Kawaii (Portlait view adjusted by width/height)**   
+<img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
+ Author:     Ryo Nakaya<br>
+ Date:        2025-07-05<br>
+ Version:     0.1<br>
 
 ---
  
