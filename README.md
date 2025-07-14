@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.2.0 on 5July2025)
+# OncoPlotter (Latest version 0.2.1 on 14July2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -110,7 +110,8 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 	xtitle          = Days from treatment,
 	xvalues         = 0 to 40 by 4,
 	nolegend        = ,
-	interval        = week /* null for Day. Choose from Week, Month to show week or month view */
+	interval        = week, /* null for Day. Choose from Week, Month to show week or month view */
+	Generated_Code	= Y
 )
 ~~~
 **Example 1. colorStyle=OncoPlotter (with durable line)**  
@@ -121,13 +122,14 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2025-07-05<br>
- Version:     0.1<br>
+ Date:        2025-07-14<br>
+ Version:     0.2<br>
 
 ---
  
 ## Version history  
-0.2.0(5July2025)  : added swimmer plot  
+0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
+0.2.0(5July2025)	: added swimmer plot  
 0.1.0(24June2025)	: Initial version
 
 ## What is SAS Packages?
