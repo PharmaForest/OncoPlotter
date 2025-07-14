@@ -9,38 +9,39 @@ You can test swimmer_plot macro usin the datasets.
 
 ~~~sas
 %Swimmer_Plot(
-	adrs			= adrs_dummy,
-	adsl			= adsl_dummy,
-	whr_adrs		= PARAM="Overall Response" and PARQUAL="IRC",
-	whr_adsl		= FASFL="Y",
-	eotvar 		= EOTSTT,
-	lstvstdt		= ,
-	crprN 		= 1 2,
-	durable		= Y,
-	durableLabel = Durable Period,
-	groupvar 		= STAGEN,
-	groupLabel 	= Disease Stage,
-	groupN 		= 1 2 3 4 5,
-	groupC 		= Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
-	responseN 	= 1 2 3 4,
-	responseC 	= CR | PR | SD | PD,
+	adrs				= adrs_dummy,
+	adsl				= adsl_dummy,
+	whr_adrs			= PARAM="Overall Response" and PARQUAL="IRC",
+	whr_adsl			= FASFL="Y",
+	eotvar 			= EOTSTT,
+	lstvstdt			= ,
+	crprN 			= 1 2,
+	durable			= Y,
+	durableLabel 	= Durable Period,
+	groupvar 			= STAGEN,
+	groupLabel 		= Disease Stage,
+	groupN 			= 1 2 3 4 5,
+	groupC 			= Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
+	responseN 		= 1 2 3 4,
+	responseC 		= CR | PR | SD | PD,
 	responseLabel 	= Response,
 	deathLabel 		= Death,
 	ongoingLabel 	= Treatment Ongoing,
-	nperpage 	= 20,
-	width 		= 640,
-	height		= 480,
-	subjidOn 	= Y,
-	colorStyle = OncoPlotter,
-	groupColor = ,
-	markerColor = ,
-	markerSymbol = ,
-	title = Swimmer%str(%')s Plot,
-	ytitle 		= Subject,
-	xtitle 		= Days from treatment,
-	xvalues 	= 0 to 40 by 4,
-	nolegend = ,
-	interval = week
+	nperpage 		= 20,
+	width 				= 640,
+	height				= 480,
+	subjidOn		 	= Y,
+	colorStyle 		= OncoPlotter,
+	groupColor 		= ,
+	markerColor 	= ,
+	markerSymbol 	= ,
+	title 				= Swimmer%str(%')s Plot,
+	ytitle 				= Subject,
+	xtitle 				= Days from treatment,
+	xvalues 			= 0 to 40 by 4,
+	nolegend			= ,
+	interval 			= week,
+	Generate_Code = Y
 )
 ~~~
 
@@ -51,8 +52,8 @@ You can test swimmer_plot macro usin the datasets.
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
 
 * Author:     Ryo Nakaya
-* Date:        2025-07-05
-* Version:     0.1
+* Date:        2025-07-14
+* Version:     0.2
 
 *//*** HELP END ***/
 
@@ -88,8 +89,19 @@ You can test swimmer_plot macro usin the datasets.
 	xtitle = Days from Treatment Start,	/* title for x-axis */
 	xvalues = ,	/* range of x-axis */
 	nolegend = ,	/* Y to surpress the legend */
-	interval = 	/* Can change time intervals from Day to Week or Month */
+	interval = ,	/* Can change time intervals from Day to Week or Month */
+	Generate_Code = Y
 	) ;
+
+/*@@@@@@@@*/
+options nomfile;
+%if %upcase(&Generate_Code) =Y %then %do;
+  %let codepath = %sysfunc(pathname(WORK));
+  %let sysind =&sysindex;
+  filename mprint "&codepath.\swimmer_plot&sysind..txt";
+  options mfile mprint;
+%end;
+/*@@@@@@@@*/
 
 /* separator, formats*/
 %SP_change(var=groupC);
@@ -259,6 +271,19 @@ quit;
 ods graphics / width=&width.px height=&height.px;
 %SP_split_plot;
 ods graphics / reset=all ;
+
+/*@@@@@@@@*/
+%if %upcase(&Generate_Code) =Y %then %do;
+  options noxwait noxsync;
+  options nomprint nomfile;
+  filename mprint clear;
+  data _null_;
+    call sleep(1,1);
+  run;
+
+  %sysexec "&codepath.\swimmer_plot&sysind..txt";
+%end;
+/*@@@@@@@@*/
 
 %mend ;
 
