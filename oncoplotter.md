@@ -9,17 +9,17 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.2.0
-- Generated: 2025-07-05T20:06:11
+- Version: 0.2.1
+- Generated: 2025-07-14T14:07:26
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*7ED631608FC27B528F4012E0E49B11ED48E560F73E8DB1805A044290ADD20DA8` for this version
-- Content SHA256: `C*B1C8F38DB561562A94D1F1F5918883CCD739FA6084F27F020A2D456755FE5F38` for this version
+- File SHA256: `F*11438D0FF309E84BC1EC6CA4EE4D915D5D40E0262704F7AA95B1A4DB838FEE0C` for this version
+- Content SHA256: `C*7D258453B062223AD6D32A414D4A8FD2EFE60F0DE1875B14AF02CAC10814C4B8` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.2.0`;
+# The `OncoPlotter` package, version: `0.2.1`;
   
 ---
  
@@ -213,38 +213,39 @@ You can test swimmer_plot macro usin the datasets.
 
 ~~~sas
 %Swimmer_Plot(
-	adrs			= adrs_dummy,
-	adsl			= adsl_dummy,
-	whr_adrs		= PARAM="Overall Response" and PARQUAL="IRC",
-	whr_adsl		= FASFL="Y",
-	eotvar 		= EOTSTT,
-	lstvstdt		= ,
-	crprN 		= 1 2,
-	durable		= Y,
-	durableLabel = Durable Period,
-	groupvar 		= STAGEN,
-	groupLabel 	= Disease Stage,
-	groupN 		= 1 2 3 4 5,
-	groupC 		= Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
-	responseN 	= 1 2 3 4,
-	responseC 	= CR | PR | SD | PD,
+	adrs				= adrs_dummy,
+	adsl				= adsl_dummy,
+	whr_adrs			= PARAM="Overall Response" and PARQUAL="IRC",
+	whr_adsl			= FASFL="Y",
+	eotvar 			= EOTSTT,
+	lstvstdt			= ,
+	crprN 			= 1 2,
+	durable			= Y,
+	durableLabel 	= Durable Period,
+	groupvar 			= STAGEN,
+	groupLabel 		= Disease Stage,
+	groupN 			= 1 2 3 4 5,
+	groupC 			= Stage I | Stage IIa | Stage IIb | Stage III | Stage IV,
+	responseN 		= 1 2 3 4,
+	responseC 		= CR | PR | SD | PD,
 	responseLabel 	= Response,
 	deathLabel 		= Death,
 	ongoingLabel 	= Treatment Ongoing,
-	nperpage 	= 20,
-	width 		= 640,
-	height		= 480,
-	subjidOn 	= Y,
-	colorStyle = OncoPlotter,
-	groupColor = ,
-	markerColor = ,
-	markerSymbol = ,
-	title = Swimmer%str(%')s Plot,
-	ytitle 		= Subject,
-	xtitle 		= Days from treatment,
-	xvalues 	= 0 to 40 by 4,
-	nolegend = ,
-	interval = week
+	nperpage 		= 20,
+	width 				= 640,
+	height				= 480,
+	subjidOn		 	= Y,
+	colorStyle 		= OncoPlotter,
+	groupColor 		= ,
+	markerColor 	= ,
+	markerSymbol 	= ,
+	title 				= Swimmer%str(%')s Plot,
+	ytitle 				= Subject,
+	xtitle 				= Days from treatment,
+	xvalues 			= 0 to 40 by 4,
+	nolegend			= ,
+	interval 			= week,
+	Generate_Code = Y
 )
 ~~~
 
@@ -255,8 +256,8 @@ You can test swimmer_plot macro usin the datasets.
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
 
 * Author:     Ryo Nakaya
-* Date:        2025-07-05
-* Version:     0.1
+* Date:        2025-07-14
+* Version:     0.2
 
   
 ---
