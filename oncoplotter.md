@@ -9,17 +9,17 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.2.1
-- Generated: 2025-07-14T14:07:26
+- Version: 0.2.2
+- Generated: 2025-07-23T11:51:52
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*11438D0FF309E84BC1EC6CA4EE4D915D5D40E0262704F7AA95B1A4DB838FEE0C` for this version
-- Content SHA256: `C*7D258453B062223AD6D32A414D4A8FD2EFE60F0DE1875B14AF02CAC10814C4B8` for this version
+- File SHA256: `F*2FC17BF65232A0B6600323B39D5D8E3FCA912CBB927698BEA7F0FAFE5E13CD39` for this version
+- Content SHA256: `C*61484E154613368047D71A9F8EB05A27B854E4C4DCA5917716BDE44C6B2EAAA8` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.2.1`;
+# The `OncoPlotter` package, version: `0.2.2`;
   
 ---
  
