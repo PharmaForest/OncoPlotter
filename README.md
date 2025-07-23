@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.2.1 on 14July2025)
+# OncoPlotter (Latest version 0.2.2 on 23July2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -128,6 +128,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 ---
  
 ## Version history  
+0.2.2(23July2025)	: A bug fixed and made modification to handle no groupvar in swimmer plot  
 0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
 0.2.0(5July2025)	: added swimmer plot  
 0.1.0(24June2025)	: Initial version
