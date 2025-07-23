@@ -97,31 +97,38 @@ This macro is main functionality including sgplot.
 	     appeared firstly in the plot(e.g. order of data appearance like 5,4,2,1,3 matches to above colors).
          To match with asending order of categories 1,2,3,4,5, dummy records with ascending order is created here. 
 	*/
-	  do group_idx = 1 to &groupN_n.;
-		&groupvar. = group_idx;
- 		item = .;   
-	    output;
-  	  end;
-	  do aval_idx = 1 to &responseN_n.;
-	    AVAL = aval_idx;
-	    item = .;
-	    output;
-	  end;
+	  %if %superq(groupvar) ne %str() %then %do;
+		  do group_idx = 1 to &groupN_n.;
+			&groupvar. = group_idx;
+	 		item = .;   
+		    output;
+	  	  end;
+		  do aval_idx = 1 to &responseN_n.;
+		    AVAL = aval_idx;
+		    item = .;
+		    output;
+		  end;
+	  %end ;
 
 	  merge PLOT_SUBSET(in=a) ITEM_LIST1(in=b);
 	  by item;
 	  if a then output;
 	  else do; /*add extra records with dummy item(to have same width of bars across plots)*/
+	  	%if %superq(groupvar) ne %str() %then %do;
 	    array groupns{&groupN_n.} 8 _temporary_ (&groupN_comma.);
+		%end ;
 	    array avals{&responseN_n.} 8 _temporary_ (&responseN_comma.);
 
+	  	%if %superq(groupvar) ne %str() %then %do;
 	    group_idx = mod(item-&itemmax.-1, &groupN_n.) + 1;
+		&groupvar. = groupns{group_idx};
+		%end ;
 	    aval_idx = mod(item-&itemmax-1, &responseN_n.) + 1;
-	    &groupvar. = groupns{group_idx};
+	    
 	    AVAL = avals{aval_idx};
 	    output;
 	  end;
-	  drop group_idx aval_idx;
+	  drop %if %superq(groupvar) ne %str() %then %do; group_idx %end ; aval_idx;
 	run;
 	data PLOT_SUBSET2 ;
 		set PLOT_SUBSET2 ;
@@ -130,6 +137,7 @@ This macro is main functionality including sgplot.
 
       title "&title &i of &npage";
       proc sgplot data=PLOT_SUBSET2 nocycleattrs %if &nolegend.=Y %then %do ; noautolegend %end ; ;
+	    %if %superq(groupvar) ne %str() %then %do;
 	    format &groupvar. groupf. AVAL respf. ;
 
         highlow y=item low=low high=high / 
@@ -137,6 +145,32 @@ This macro is main functionality including sgplot.
           lineattrs=(color=black) transparency=0
           highcap=endcap legendlabel="&groupLabel"
 		  name="group" ;
+         %end;
+        %else %do;
+          format AVAL respf.;
+          highlow y=item low=low high=high /
+            type=bar fill nooutline
+            lineattrs=(color=black) transparency=0
+ 			  %if %sysfunc(strip(%upcase(&colorStyle.))) = ONCOPLOTTER %then %do ; 
+				  fillattrs=(color=CX85A0B8)
+			  %end ;
+			  %else %if %sysfunc(strip(%upcase(&colorStyle.))) = SALMON %then %do ; 
+				  fillattrs=(color=pink)
+			  %end ;
+			  %else %if %sysfunc(strip(%upcase(&colorStyle.))) = KAWAII %then %do ; 
+				  fillattrs=(color=lightgreen)
+			  %end ;
+			  %else %if %sysfunc(strip(%upcase(&colorStyle.))) = KYOTO %then %do ; 
+				  fillattrs=(color=CX8F9779)
+			  %end ;
+			  %else %if %sysfunc(strip(%upcase(&colorStyle.))) = OSAKA %then %do ; 
+				  fillattrs=(color=CXFFF200)
+			  %end ;
+            highcap=endcap
+            name="group";
+        %end;
+
+        %if %superq(groupvar) ne %str() %then %do;
 		  %if %superq(colorStyle) ne %str() %then %do;
 			  %if %sysfunc(strip(%upcase(&colorStyle.))) = ONCOPLOTTER %then %do ; 
 				styleattrs datacolors=(CXE2E9ED CXA1B5C3 CX85A0B8 CX688AAD CX283E59) 
@@ -158,12 +192,16 @@ This macro is main functionality including sgplot.
 				styleattrs datacolors=(CXFFF200 lightgrey CXE60012 CX996600 thistle) 
 					datasymbols=(squarefilled trianglefilled circlefilled X) ;
 			  %end ;
-		   %end ;
- 		   %else %do ;
-		   	%put &groupColor. &markerSymbol. ;
+		    %end ;
+ 		    %else %do ;
 				styleattrs datacolors=(&groupColor.) 
 					datasymbols=(&markerSymbol.) ;
-		   %end ;
+		    %end ;
+		%end ;
+        %else %do;
+          /* no groupvar */
+          styleattrs datacolors=(CX283E59); 
+        %end;
 
 	   %if &durable. = Y %then %do ;
         highlow y=item low=durable_low high=durable_high / 
@@ -211,11 +249,15 @@ This macro is main functionality including sgplot.
         yaxis reverse display=(noticks) label="&ytitle"
           values=(&yvals) valuesdisplay=(&ylabels);
 
-		%if &nolegend. ne Y %then %do ;
-        keylegend "response"	   %if &durable. = Y %then %do ; "durable" %end ;
-			"death" "dummy" / border location=inside position=bottomright across=1;
-        keylegend 'group' / title="&groupLabel" ;
-		%end ;
+        %if &nolegend. ne Y and %superq(groupvar) ne %str() %then %do ;
+          keylegend "response" %if &durable. = Y %then %do ; "durable" %end ;
+            "death" "dummy" / border location=inside position=bottomright across=1;
+          keylegend 'group' / title="&groupLabel" ;
+        %end ;
+        %else %if &nolegend. ne Y and %superq(groupvar) = %str() %then %do;
+          keylegend "response" %if &durable. = Y %then %do ; "durable" %end ;
+            "death" "dummy" / border location=inside position=bottomright across=1;
+        %end ;
       run;
   %end;
 %mend;

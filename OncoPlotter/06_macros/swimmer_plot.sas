@@ -104,14 +104,17 @@ options nomfile;
 /*@@@@@@@@*/
 
 /* separator, formats*/
-%SP_change(var=groupC);
 %SP_change(var=responseC);
-%let groupN_comma = %sysfunc(tranwrd(&groupN, %str( ),%str(,))); /* to comma separated */
-%let groupN_n = %sysfunc(countw(&groupN, %str( ))); /*number of groupN*/
 %let responseN_comma = %sysfunc(tranwrd(&responseN, %str( ),%str(,))); /* to comma separated */
 %let responseN_n = %sysfunc(countw(&responseN, %str( ))); /*number of groupN*/
-%SP_make_groupf_format()
 %SP_make_respf_format()
+
+%if %superq(groupvar) ne %str() %then %do;
+	%SP_change(var=groupC);
+	%let groupN_comma = %sysfunc(tranwrd(&groupN, %str( ),%str(,))); /* to comma separated */
+	%let groupN_n = %sysfunc(countw(&groupN, %str( ))); /*number of groupN*/
+	%SP_make_groupf_format()
+%end ;
 
 /*==========================================================================*/
 /* merge ADRS and ADSL */
@@ -209,7 +212,7 @@ proc sql ; /*merge item to response duration data*/
 	on a.USUBJID = b.USUBJID ;
 quit ;
 data SWIM_RESPONSE4 ;
-	merge SWIM_RESPONSE3(in=A) &adsl._sort ;
+	merge SWIM_RESPONSE3(in=A) &adsl._sort(where=(&whr_adsl.)) ;
 	by USUBJID ;
 run ;
 
