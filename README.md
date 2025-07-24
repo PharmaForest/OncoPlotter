@@ -122,8 +122,8 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2025-07-14<br>
- Version:     0.2<br>
+ Date:        2025-07-23<br>
+ Version:     0.3<br>
 
 ---
  
