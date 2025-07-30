@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.2.2 on 23July2025)
+# OncoPlotter (Latest version 0.3.0 on 30July2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -8,7 +8,7 @@ The repository is a collaborative project.
 
 ---
 
-# `%kaplan_meier_plot</a> 
+# %kaplan_meier_plot</a> 
 <br>
 Macro:       %kaplan_meier_plot<br>
 <br>
@@ -70,7 +70,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
  Date:        2025-06-24<br>
  Version:     0.1<br>
 
-# `%swimmer_plot</a> 
+# %swimmer_plot</a> 
 <br>
 Macro:       %swimmer_plot<br>
 <br>
@@ -126,7 +126,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
  Version:     0.3<br>
 
 
-# `%waterfall_plot</a> 
+# %waterfall_plot</a> 
 <br>
 Macro:       %waterfall_plot<br>
 <br>
