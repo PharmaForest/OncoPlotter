@@ -9,25 +9,23 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.2.2
-- Generated: 2025-07-23T11:51:52
+- Version: 0.3.0
+- Generated: 2025-07-30T11:58:20
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*2FC17BF65232A0B6600323B39D5D8E3FCA912CBB927698BEA7F0FAFE5E13CD39` for this version
-- Content SHA256: `C*61484E154613368047D71A9F8EB05A27B854E4C4DCA5917716BDE44C6B2EAAA8` for this version
+- File SHA256: `F*A1BCE939B4D4AE1DBBF5F82AFCC801B115C29EEBECD5E51AC78EED64107F0EBC` for this version
+- Content SHA256: `C*4D91C0F0CCBC2F8884209A0E2640E750BD8914D8A7B8C6458E9129B2E20E1E69` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.2.2`;
+# The `OncoPlotter` package, version: `0.3.0`;
   
 ---
  
-
 A SAS package to create figures commonly created in oncology studies.
- - %kaplan_meier_plot
- - %swimmer_plot
-
+- %kaplan_meier_plot
+- %swimmer_plot
   
 ---
  
@@ -49,37 +47,47 @@ Required SAS Components:
 # The `OncoPlotter` package content
 The `OncoPlotter` package consists of the following content:
  
-1. [`01_adsl_dummy` data ](#01adsldummy-data-1 )
-2. [`02_adrs_dummy` data ](#02adrsdummy-data-2 )
-3. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-3 )
-4. [`%sp_change()` macro ](#spchange-macros-4 )
-5. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-5 )
-6. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-6 )
-7. [`%sp_split_plot()` macro ](#spsplitplot-macros-7 )
-8. [`%swimmer_plot()` macro ](#swimmerplot-macros-8 )
+1. [`_01_adsl_dummy` data ](#01adsldummy-data-1 )
+2. [`_02_adrs_dummy` data ](#02adrsdummy-data-2 )
+3. [`_03_adtr_dummy` data ](#03adtrdummy-data-3 )
+4. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-4 )
+5. [`%sp_change()` macro ](#spchange-macros-5 )
+6. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-6 )
+7. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-7 )
+8. [`%sp_split_plot()` macro ](#spsplitplot-macros-8 )
+9. [`%swimmer_plot()` macro ](#swimmerplot-macros-9 )
+10. [`%waterfall_plot()` macro ](#waterfallplot-macros-10 )
   
  
-9. [License note](#license)
-  
----
- 
-## `01_adsl_dummy` data <a name="01adsldummy-data-1"></a> ######
-
- ## Create dummy datasets
-   ADSL_DUMMY
-
+11. [License note](#license)
   
 ---
  
-## `02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
+## `_01_adsl_dummy` data <a name="01adsldummy-data-1"></a> ######
 
- ## Create dummy datasets
-   ADRS_DUMMY
+## Create dummy datasets
+ADSL_DUMMY
 
   
 ---
  
-## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-3"></a> ######
+## `_02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
+
+## Create dummy datasets
+ADRS_DUMMY
+
+  
+---
+ 
+## `_03_adtr_dummy` data <a name="03adtrdummy-data-3"></a> ######
+
+## Create dummy datasets
+ADTR_DUMMY
+
+  
+---
+ 
+## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-4"></a> ######
 
 * Program:     kaplan_meier_plot.txt
 * Macro:       %kaplan_meier_plot
@@ -136,13 +144,11 @@ The `OncoPlotter` package consists of the following content:
   
 ---
  
-## `%sp_change()` macro <a name="spchange-macros-4"></a> ######
+## `%sp_change()` macro <a name="spchange-macros-5"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
-
 Purpose:
 Change separater of | to "","" (e.g. CR | PR | SD   ->   "CR","PR","SD")
-
 * Author:     Ryo Nakaya
 * Date:        2025-07-05
 * Version:     0.1
@@ -150,19 +156,17 @@ Change separater of | to "","" (e.g. CR | PR | SD   ->   "CR","PR","SD")
   
 ---
  
-## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-5"></a> ######
+## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-6"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
-
 Purpose:
-Create format for groupvar (e.g. 
+Create format for groupvar (e.g.
 	proc format ;
 		value groupf
 		1 = "Stage I"
 		2 = "Stage II"
 		;
 	run ;
-
 * Author:     Ryo Nakaya
 * Date:        2025-07-05
 * Version:     0.1
@@ -170,19 +174,17 @@ Create format for groupvar (e.g.
   
 ---
  
-## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-6"></a> ######
+## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-7"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
-
 Purpose:
-Create format for response (e.g. 
+Create format for response (e.g.
 	proc format ;
 		value respf
 		1 = "CR"
 		2 = "PR"
 		;
 	run ;
-
 * Author:     Ryo Nakaya
 * Date:        2025-07-05
 * Version:     0.1
@@ -190,11 +192,10 @@ Create format for response (e.g.
   
 ---
  
-## `%sp_split_plot()` macro <a name="spsplitplot-macros-7"></a> ######
+## `%sp_split_plot()` macro <a name="spsplitplot-macros-8"></a> ######
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
-
 * Author:     Ryo Nakaya
 * Date:        2025-07-05
 * Version:     0.1
@@ -202,15 +203,13 @@ This macro is main functionality including sgplot.
   
 ---
  
-## `%swimmer_plot()` macro <a name="swimmerplot-macros-8"></a> ######
+## `%swimmer_plot()` macro <a name="swimmerplot-macros-9"></a> ######
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
-
 ### Sample code
 Datasets(adsl_dummy and adrs_dummy) are created in WORK library when OncoPlotter is installed.
 You can test swimmer_plot macro usin the datasets.
-
 ~~~sas
 %Swimmer_Plot(
 	adrs				= adrs_dummy,
@@ -248,16 +247,132 @@ You can test swimmer_plot macro usin the datasets.
 	Generate_Code = Y
 )
 ~~~
-
 ### prerequisites
- - Response data		: BDS ADaM dataset 
+- Response data		: BDS ADaM dataset
 		(USUBJID, AVAL, ADT, ADY)
- - Subject-level-data	: ADSL ADaM dataset
+- Subject-level-data	: ADSL ADaM dataset
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
-
 * Author:     Ryo Nakaya
 * Date:        2025-07-14
 * Version:     0.2
+
+  
+---
+ 
+## `%waterfall_plot()` macro <a name="waterfallplot-macros-10"></a> ######
+
+
+
+
+/*************************************************************************
+* Program:     Waterfall_Plot.sas
+* Macro:       %Waterfall_Plot
+*
+* Purpose:     This macro generates a Waterfall Plot using ADaM datasets
+*              (ADSL, ADTR, ADRS) to visualize tumor size changes from baseline.
+*
+* Features:
+*   - Plots percent change in tumor size (e.g., from baseline to nadir)
+*   - Supports grouping by Best Overall Response (BOR) or any other variable
+*   - Custom group labels, color coding, and legend display
+*   - Flexible WHERE conditions for subsetting each dataset
+*   - Customizable axis range, plot title, width, and height
+*   - Option to output SAS code
+*
+* Parameters:
+*   adrs=           Input response dataset (e.g., ADRS with BOR)
+*   adtr=           Tumor measurements dataset (e.g., ADTR with SLD)
+*   adsl=           Subject-level dataset (e.g., ADSL)
+*
+*   whr_adrs=       WHERE clause for ADRS dataset (e.g., PARAMCD = "BOR")
+*   whr_adtr=       WHERE clause for ADTR dataset (e.g., PARAMCD = "SLD")
+*   whr_adsl=       WHERE clause for ADSL dataset (e.g., SAFFL = "Y")
+*
+*   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
+*   groupLabel=     Character variable used for group labels (e.g., BOR term)
+*   groupN=         List of numeric group values (e.g., 1 2 3)
+*   groupC=         List of character group labels (e.g., "CR" "PR" "SD")
+*   groupColor=     Color list for group bars (e.g., red blue green)
+*
+*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
+*
+*   width=          Width of the plot in pixels (default: 840)
+*   height=         Height of the plot in pixels (default: 480)
+*
+*   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
+*   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
+*   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
+*
+*   Generate_Code=  Option to output generated SAS code via MFILE (Y/N)
+*
+* Example usage:
+******************************
+* Example 1:
+*   %Waterfall_Plot(
+*     adrs = ADRS,
+*     adtr = ADTR,
+*     adsl = ADSL,
+*     whr_adrs = PARAMCD = "BOR",
+*     whr_adtr = PARAMCD = "SLD",
+*     whr_adsl = SAFFL = "Y",
+*     groupVar = GROUPN,
+*     groupLabel = GROUPC,
+*     groupN = 1 2 3,
+*     groupC = "CR" "PR" "SD",
+*     groupColor = red blue green,
+*     responseVar = PCHG,
+*     width = 840,
+*     height = 480,
+*     title = %nrquote(Waterfall Plot of Best Tumor Response),
+*     ytitle = %nrquote(Change from Baseline (%)),
+*     yvalues = -100 to 100 by 20,
+*     Generate_Code = Y
+*   );
+* 
+******************************
+* Example 2:
+* proc sort data=adrs_dummy out=ADRS1;
+*   by USUBJID AVAL;
+* run;
+* data ADRS2;
+*   set ADRS1;
+*   where paramcd eq "OVRLRS";
+*   where same PARQUAL eq "IRC";
+*   by USUBJID AVAL;
+*   if first.USUBJID then ANL01FL="Y";
+* run;
+* 
+* 
+* %Waterfall_Plot(
+*   adrs      = ADRS2,
+*   adtr      = adtr_dummy,
+*   adsl      = adsl_dummy,
+* 
+*   whr_adrs    = PARAM="Overall Response" and PARQUAL="IRC"                      and ANL01FL="Y",
+*   whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+*   whr_adsl    = FASFL="Y",
+* 
+*   groupVar     = AVAL,
+*   groupN       = 1 2 3 4,
+*   groupC       = CR | PR | SD | PD,
+*   groupLabel   = Best Overall Response:,
+*   groupColor   = green | blue | gray | red,
+* 
+*   responseVar  = PCHG,
+* 
+*   width     = 840,
+*   height    = 480,
+* 
+*   title   = ,         
+*   ytitle  = Change from Baseline (%), 
+*   yvalues = -100 to 100 by 20,  
+* 
+*   Generate_Code = Y
+* );
+* 
+* Author:     Hiroki Yamanobe
+* Date:       2025-07-29
+* Version:    0.1
 
   
 ---
@@ -267,25 +382,22 @@ You can test swimmer_plot macro usin the datasets.
  
 # License <a name="license"></a> ######
  
-	Copyright (c) [2025]  [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy  
-  of this software and associated documentation files (the "Software"), to deal 
-  in the Software without restriction, including without limitation the rights  
-  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell     
-  copies of the Software, and to permit persons to whom the Software is         
-  furnished to do so, subject to the following conditions:                      
-                                                                                
-  The above copyright notice and this permission notice shall be included       
-  in all copies or substantial portions of the Software.                        
-                                                                                
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR    
-  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,      
-  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE   
-  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER        
-  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
-  SOFTWARE.
+Copyright (c) [2025]  [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included
+in all copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
   
 ---
  
