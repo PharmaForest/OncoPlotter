@@ -125,9 +125,96 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
  Date:        2025-07-23<br>
  Version:     0.3<br>
 
+
+# `%waterfall_plot</a> 
+<br>
+Macro:       %waterfall_plot<br>
+<br>
+Purpose:     This macro generates waterfall plot using proc sgplot with modern views which address not only CSR figures but also publication figures. <br> 
+            You can run the example code below since ADSL, ADTR and ADRS datasets are created under WORK library when you load OncoPlotter.  
+
+~~~sas
+Parameters:
+  adrs=           Input response dataset (e.g., ADRS with BOR)
+  adtr=           Tumor measurements dataset (e.g., ADTR with SUMDIA)
+  adsl=           Subject-level dataset (e.g., ADSL)
+
+  whr_adrs=       where condition for selecting best response per subject (e.g. PARAMCD="BOR" and ANL01FL="Y")
+  whr_adtr=       where condition to select the best sum of diameters per subject (e.g. PARAMCD="SUMDIA" and ANL01FL="Y")
+  whr_adsl=       where condition for subject-level data (e.g. FASFL="Y")
+
+
+  groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
+  groupLabel=     Character variable used for group labels (e.g., BOR term)
+  groupN=         List of numeric group values (e.g., 1 2 3)
+  groupC=         List of character group labels (e.g., "CR" "PR" "SD")
+  groupColor=     Color list for group bars (e.g., red blue green)
+
+  responseVar=    Numeric variable plotted on Y-axis (e.g., PCHG[percent change in tumor size])
+
+  width=          Width of the plot in pixels (default: 840)
+  height=         Height of the plot in pixels (default: 480)
+
+  title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
+  ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
+  yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
+
+  Generate_Code=  Option to output generated SAS code (Y/N)
+~~~
+
+**Example.**  
+~~~sas
+proc sort data=adrs_dummy out=ADRS1;
+  by USUBJID AVAL;
+run;
+data ADRS2;
+  set ADRS1;
+  where paramcd eq "OVRLRS";
+  where same PARQUAL eq "IRC";
+  by USUBJID AVAL;
+  if first.USUBJID then ANL01FL="Y";
+run;
+
+
+%Waterfall_Plot(
+  adrs      = ADRS2,
+  adtr      = adtr_dummy,
+  adsl      = adsl_dummy,
+
+  whr_adrs    = PARAM="Overall Response" and PARQUAL="IRC"                      and ANL01FL="Y",
+  whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+  whr_adsl    = FASFL="Y",
+
+  groupVar     = AVAL,
+  groupN       = 1 2 3 4,
+  groupC       = CR | PR | SD | PD,
+  groupLabel   = Best Overall Response:,
+  groupColor   = green | blue | gray | red,
+
+  responseVar  = PCHG,
+
+  width     = 840,
+  height    = 480,
+
+  title   = ,         
+  ytitle  = Change from Baseline (%), 
+  yvalues = -100 to 100 by 20,  
+
+  Generate_Code = Y
+);
+~~~
+**output image. **  
+<img width="300" alt="Image" src="./.github/WaterfallPlot_OncoPlotter.png" />  
+
+
+ Author:     Hiroki Yamanobe<br>
+ Date:        2025-07-30<br>
+ Version:     0.3<br>
+
 ---
  
 ## Version history  
+0.3.0(23July2025)	: added waterfall plot  
 0.2.2(23July2025)	: A bug fixed and made modification to handle no groupvar in swimmer plot  
 0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
 0.2.0(5July2025)	: added swimmer plot  
