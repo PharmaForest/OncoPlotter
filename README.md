@@ -5,7 +5,8 @@ A SAS package to create figures commonly created in oncology studies
 The repository is a collaborative project.
  - **%kaplan_meier_plot**
  - **%swimmer_plot**
-
+ - **%waterfall_plot**
+  
 ---
 
 # %kaplan_meier_plot</a> 
