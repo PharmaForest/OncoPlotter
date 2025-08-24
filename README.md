@@ -215,7 +215,7 @@ run;
 ---
  
 ## Version history  
-0.3.0(23July2025)	: added waterfall plot  
+0.3.0(30July2025)	: added waterfall plot  
 0.2.2(23July2025)	: A bug fixed and made modification to handle no groupvar in swimmer plot  
 0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
 0.2.0(5July2025)	: added swimmer plot  
