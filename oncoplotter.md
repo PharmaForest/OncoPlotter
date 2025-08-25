@@ -9,17 +9,17 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.3.0
-- Generated: 2025-07-30T11:58:20
+- Version: 0.3.1
+- Generated: 2025-08-25T17:52:57
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*A1BCE939B4D4AE1DBBF5F82AFCC801B115C29EEBECD5E51AC78EED64107F0EBC` for this version
-- Content SHA256: `C*4D91C0F0CCBC2F8884209A0E2640E750BD8914D8A7B8C6458E9129B2E20E1E69` for this version
+- File SHA256: `F*87649E7FEB9C7E9B93D43DA54FCC80E1D05154DF92FA5E974ED64A4DC89A9A09` for this version
+- Content SHA256: `C*30E8ACAF8AAF221FAEA694DBECCC0136C67B483E521F4F09AE71C0F6D07DEBCF` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.3.0`;
+# The `OncoPlotter` package, version: `0.3.1`;
   
 ---
  
@@ -261,9 +261,6 @@ You can test swimmer_plot macro usin the datasets.
  
 ## `%waterfall_plot()` macro <a name="waterfallplot-macros-10"></a> ######
 
-
-
-
 /*************************************************************************
 * Program:     Waterfall_Plot.sas
 * Macro:       %Waterfall_Plot
@@ -281,12 +278,12 @@ You can test swimmer_plot macro usin the datasets.
 *
 * Parameters:
 *   adrs=           Input response dataset (e.g., ADRS with BOR)
-*   adtr=           Tumor measurements dataset (e.g., ADTR with SLD)
+*   adtr=           Tumor measurements dataset (e.g., ADTR with SUMDIA)
 *   adsl=           Subject-level dataset (e.g., ADSL)
 *
-*   whr_adrs=       WHERE clause for ADRS dataset (e.g., PARAMCD = "BOR")
-*   whr_adtr=       WHERE clause for ADTR dataset (e.g., PARAMCD = "SLD")
-*   whr_adsl=       WHERE clause for ADSL dataset (e.g., SAFFL = "Y")
+*   whr_adrs=       where condition for selecting best response per subject (e.g. PARAMCD="BORIRC")
+*   whr_adtr=       where condition to select the best sum of diameters per subject (e.g. PARAMCD="SUMDIA" and ANL01FL="Y")
+*   whr_adsl=       where condition for subject-level data (e.g. FASFL="Y")
 *
 *   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
 *   groupLabel=     Character variable used for group labels (e.g., BOR term)
@@ -294,14 +291,17 @@ You can test swimmer_plot macro usin the datasets.
 *   groupC=         List of character group labels (e.g., "CR" "PR" "SD")
 *   groupColor=     Color list for group bars (e.g., red blue green)
 *
-*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
+*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size) 
+*   varWidth      =    Width of var (default: 0.7)
 *
 *   width=          Width of the plot in pixels (default: 840)
 *   height=         Height of the plot in pixels (default: 480)
+*   dpi=            DPI of the plot  (default: 300)
 *
 *   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
 *   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
 *   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
+*   y_refline=  referrence line (e.g. -30 20)
 *
 *   Generate_Code=  Option to output generated SAS code via MFILE (Y/N)
 *
@@ -331,47 +331,38 @@ You can test swimmer_plot macro usin the datasets.
 * 
 ******************************
 * Example 2:
-* proc sort data=adrs_dummy out=ADRS1;
-*   by USUBJID AVAL;
-* run;
-* data ADRS2;
-*   set ADRS1;
-*   where paramcd eq "OVRLRS";
-*   where same PARQUAL eq "IRC";
-*   by USUBJID AVAL;
-*   if first.USUBJID then ANL01FL="Y";
-* run;
-* 
-* 
-* %Waterfall_Plot(
-*   adrs      = ADRS2,
-*   adtr      = adtr_dummy,
-*   adsl      = adsl_dummy,
-* 
-*   whr_adrs    = PARAM="Overall Response" and PARQUAL="IRC"                      and ANL01FL="Y",
-*   whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
-*   whr_adsl    = FASFL="Y",
-* 
-*   groupVar     = AVAL,
-*   groupN       = 1 2 3 4,
-*   groupC       = CR | PR | SD | PD,
-*   groupLabel   = Best Overall Response:,
-*   groupColor   = green | blue | gray | red,
-* 
-*   responseVar  = PCHG,
-* 
-*   width     = 840,
-*   height    = 480,
-* 
-*   title   = ,         
-*   ytitle  = Change from Baseline (%), 
-*   yvalues = -100 to 100 by 20,  
-* 
-*   Generate_Code = Y
-* );
+%Waterfall_Plot(
+  adrs      = adrs_dummy,
+  adtr      = adtr_dummy,
+  adsl      = adsl_dummy,
+
+  whr_adrs    = PARAM="Best Overall Response",
+  whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+  whr_adsl    = FASFL="Y",
+
+  groupVar     = AVAL,
+  groupN       = 1 2 3 4,
+  groupC       = CR | PR | SD | PD,
+  groupLabel   = Best Overall Response:,
+  groupColor   = green | blue | gray | red,
+
+  responseVar  = PCHG,
+  VarWidth     = 0.7,
+
+  width     = 840,
+  height    = 480,
+  dpi       = 300, 
+
+  title   = ,         
+  ytitle  = Change from Baseline (%), 
+  yvalues = -100 to 100 by 20,  
+  y_refline=20 40,                
+
+  Generate_Code = Y
+);
 * 
 * Author:     Hiroki Yamanobe
-* Date:       2025-07-29
+* Date:       2025-08-25
 * Version:    0.1
 
   
