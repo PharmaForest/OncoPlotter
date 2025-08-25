@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.0 on 30July2025)
+# OncoPlotter (Latest version 0.3.1 on 25August2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -152,37 +152,29 @@ Parameters:
   groupColor=     Color list for group bars (e.g., red blue green)
 
   responseVar=    Numeric variable plotted on Y-axis (e.g., PCHG[percent change in tumor size])
+  varWidth=       Width of var (default: 0.7)
 
   width=          Width of the plot in pixels (default: 840)
   height=         Height of the plot in pixels (default: 480)
+  dpi=            DPI of the plot  (default: 300)
 
   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
+  y_refline=      Referrence line (e.g. -30 20)
 
   Generate_Code=  Option to output generated SAS code (Y/N)
 ~~~
 
 **Example.**  
 ~~~sas
-proc sort data=adrs_dummy out=ADRS1;
-  by USUBJID AVAL;
-run;
-data ADRS2;
-  set ADRS1;
-  where paramcd eq "OVRLRS";
-  where same PARQUAL eq "IRC";
-  by USUBJID AVAL;
-  if first.USUBJID then ANL01FL="Y";
-run;
-
 
 %Waterfall_Plot(
-  adrs      = ADRS2,
+  adrs      = adrs_dummy,
   adtr      = adtr_dummy,
   adsl      = adsl_dummy,
 
-  whr_adrs    = PARAM="Overall Response" and PARQUAL="IRC"                      and ANL01FL="Y",
+  whr_adrs    = PARAM="Best Overall Response",
   whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
   whr_adsl    = FASFL="Y",
 
@@ -193,13 +185,16 @@ run;
   groupColor   = green | blue | gray | red,
 
   responseVar  = PCHG,
+  VarWidth     = 0.7,
 
   width     = 840,
   height    = 480,
+  dpi       = 300, 
 
   title   = ,         
   ytitle  = Change from Baseline (%), 
   yvalues = -100 to 100 by 20,  
+  y_refline=20 40,                
 
   Generate_Code = Y
 );
@@ -209,13 +204,14 @@ run;
 
 
  Author:     Hiroki Yamanobe<br>
- Date:        2025-07-30<br>
- Version:     0.3<br>
+ Date:        2025-08-25<br>
+ Version:     0.1<br>
 
 ---
  
 ## Version history  
-0.3.0(30July2025)	: added waterfall plot  
+0.3.1(25August2025)	: Added parameter [VARWIDTH], [DPI], [Y_REFLINE] in waterfall plot
+0.3.0(30July2025)	: Added waterfall plot  
 0.2.2(23July2025)	: A bug fixed and made modification to handle no groupvar in swimmer plot  
 0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
 0.2.0(5July2025)	: added swimmer plot  
