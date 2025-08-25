@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.1 on 25August2025)
+# OncoPlotter (Latest version 0.3.1 on 25Aug2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -210,7 +210,7 @@ Parameters:
 ---
  
 ## Version history  
-0.3.1(25August2025)	: Added parameter [VARWIDTH], [DPI], [Y_REFLINE] in waterfall plot
+0.3.1(25Aug2025)	: Added parameter [VARWIDTH], [DPI], [Y_REFLINE] in waterfall plot. And fixed adrs_dummy.
 0.3.0(30July2025)	: Added waterfall plot  
 0.2.2(23July2025)	: A bug fixed and made modification to handle no groupvar in swimmer plot  
 0.2.1(14July2025)	: Added functionality of output generated SAS codes to swimmer plot  
