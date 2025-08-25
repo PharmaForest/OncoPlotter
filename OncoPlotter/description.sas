@@ -1,7 +1,7 @@
 Type : Package
 Package : OncoPlotter
 Title : OncoPlotter--A SAS package to create figures commonly created in oncology studies
-Version : 0.3.0
+Version : 0.3.1
 Author : [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 Maintainer : [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 License : MIT
@@ -14,5 +14,4 @@ A SAS package to create figures commonly created in oncology studies.
 - %kaplan_meier_plot
 - %swimmer_plot
 - %waterfall_plot
-
 DESCRIPTION END:
