@@ -1,8 +1,5 @@
 /*** HELP START ***//*
 
-
-
-
 /*************************************************************************
 * Program:     Waterfall_Plot.sas
 * Macro:       %Waterfall_Plot
@@ -20,12 +17,12 @@
 *
 * Parameters:
 *   adrs=           Input response dataset (e.g., ADRS with BOR)
-*   adtr=           Tumor measurements dataset (e.g., ADTR with SLD)
+*   adtr=           Tumor measurements dataset (e.g., ADTR with SUMDIA)
 *   adsl=           Subject-level dataset (e.g., ADSL)
 *
-*   whr_adrs=       WHERE clause for ADRS dataset (e.g., PARAMCD = "BOR")
-*   whr_adtr=       WHERE clause for ADTR dataset (e.g., PARAMCD = "SLD")
-*   whr_adsl=       WHERE clause for ADSL dataset (e.g., SAFFL = "Y")
+*   whr_adrs=       where condition for selecting best response per subject (e.g. PARAMCD="BORIRC")
+*   whr_adtr=       where condition to select the best sum of diameters per subject (e.g. PARAMCD="SUMDIA" and ANL01FL="Y")
+*   whr_adsl=       where condition for subject-level data (e.g. FASFL="Y")
 *
 *   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
 *   groupLabel=     Character variable used for group labels (e.g., BOR term)
@@ -33,14 +30,17 @@
 *   groupC=         List of character group labels (e.g., "CR" "PR" "SD")
 *   groupColor=     Color list for group bars (e.g., red blue green)
 *
-*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
+*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size) 
+*   varWidth      =    Width of var (default: 0.7)
 *
 *   width=          Width of the plot in pixels (default: 840)
 *   height=         Height of the plot in pixels (default: 480)
+*   dpi=            DPI of the plot  (default: 300)
 *
 *   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
 *   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
 *   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
+*   y_refline=  referrence line (e.g. -30 20)
 *
 *   Generate_Code=  Option to output generated SAS code via MFILE (Y/N)
 *
@@ -70,50 +70,42 @@
 * 
 ******************************
 * Example 2:
-* proc sort data=adrs_dummy out=ADRS1;
-*   by USUBJID AVAL;
-* run;
-* data ADRS2;
-*   set ADRS1;
-*   where paramcd eq "OVRLRS";
-*   where same PARQUAL eq "IRC";
-*   by USUBJID AVAL;
-*   if first.USUBJID then ANL01FL="Y";
-* run;
-* 
-* 
-* %Waterfall_Plot(
-*   adrs      = ADRS2,
-*   adtr      = adtr_dummy,
-*   adsl      = adsl_dummy,
-* 
-*   whr_adrs    = PARAM="Overall Response" and PARQUAL="IRC"                      and ANL01FL="Y",
-*   whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
-*   whr_adsl    = FASFL="Y",
-* 
-*   groupVar     = AVAL,
-*   groupN       = 1 2 3 4,
-*   groupC       = CR | PR | SD | PD,
-*   groupLabel   = Best Overall Response:,
-*   groupColor   = green | blue | gray | red,
-* 
-*   responseVar  = PCHG,
-* 
-*   width     = 840,
-*   height    = 480,
-* 
-*   title   = ,         
-*   ytitle  = Change from Baseline (%), 
-*   yvalues = -100 to 100 by 20,  
-* 
-*   Generate_Code = Y
-* );
+%Waterfall_Plot(
+  adrs      = adrs_dummy,
+  adtr      = adtr_dummy,
+  adsl      = adsl_dummy,
+
+  whr_adrs    = PARAM="Best Overall Response",
+  whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+  whr_adsl    = FASFL="Y",
+
+  groupVar     = AVAL,
+  groupN       = 1 2 3 4,
+  groupC       = CR | PR | SD | PD,
+  groupLabel   = Best Overall Response:,
+  groupColor   = green | blue | gray | red,
+
+  responseVar  = PCHG,
+  VarWidth     = 0.7,
+
+  width     = 840,
+  height    = 480,
+  dpi       = 300, 
+
+  title   = ,         
+  ytitle  = Change from Baseline (%), 
+  yvalues = -100 to 100 by 20,  
+  y_refline=20 40,                
+
+  Generate_Code = Y
+);
 * 
 * Author:     Hiroki Yamanobe
-* Date:       2025-07-29
+* Date:       2025-08-25
 * Version:    0.1
 
 *//*** HELP END ***/
+
 
 %macro Waterfall_Plot(
   adrs      = ADRS,  /* Response dataset (ADaM) */
@@ -131,13 +123,16 @@
   groupColor = , /* Color Code for group */
 
   responseVar  = , /* Numeric variable for y-axis(Sum of Diameters) */
+  VarWidth     = 0.7, /* Numeric variable for y-axis(Sum of Diameters) */
 
   width     = 840,  /* width of the plot */
   height    = 480,  /* height of the plot */
+  dpi       = 300,  /* dpi of the plot */
 
-  title   = ,  /* Title of the plot */
+  title   = ,                         /* Title of the plot */
   ytitle  = Change from Baseline (%), /* title of y-axis */
-  yvalues = -100 to 100 by 20,  /* range of y-axis */
+  yvalues = -100 to 100 by 20,        /* range of y-axis */
+  y_refline=,                         /* referrence line of y-axis (e.g. -30 20) */
 
   Generate_Code = Y
   ) ;
@@ -204,17 +199,37 @@ data attrmapData;
 run;
 
 /*==========================================================================*/
+/* set refline */
+data _null_;
+  if ^missing("&y_refline.") then do;
+    VAR=tranwrd(cats("&y_refline.")," ","|");
+    cnt=count(VAR,"|");
+    put cnt=;
+    do i=1 to cnt+1;
+      OUT=catx(" ","refline",scan(VAR,i,"|"),'/ axis=y lineattrs=(pattern=shortdash color=gray);');
+      call symputx(cats("L_ref",i),OUT,"L");
+      call symputx("max_refline",i,"L");
+    end;
+   end;
+   else call symputx("max_refline",0,"L");
+run;
+%put &=max_refline.;
+
+/*==========================================================================*/
 /* Plot */
-ods graphics / width=&width.px height=&height.px;
+ods html image_dpi=&dpi.;
+
+ods graphics / width=&width.px height=&height.px ;
 
     title "&title.";
     proc sgplot data=WATERFALL2 dattrmap=attrmapData;
       refline   0 / axis=y lineattrs=(pattern=solid     color=gray);
-      refline -30 / axis=y lineattrs=(pattern=shortdash color=gray);
-      refline  20 / axis=y lineattrs=(pattern=shortdash color=gray);
+      %do i=1 %to &max_refline.;
+        &&L_ref&i..;
+      %end;
 
       vbar ORDER/
-        response=&responseVar. barwidth=0.7
+        response=&responseVar. barwidth=&VarWidth.
         group=&groupVar. grouporder=ascending attrid=groupClor name="group"
         ;
 
