@@ -10,9 +10,7 @@ Required : "Base SAS Software"
 ReqPackages :  
 
 DESCRIPTION START:
-
 A SAS package to create figures commonly created in oncology studies.
- - %kaplan_meier_plot
- - %swimmer_plot
-
+- %kaplan_meier_plot
+- %swimmer_plot
 DESCRIPTION END:
