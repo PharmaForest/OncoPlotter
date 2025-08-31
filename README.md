@@ -112,7 +112,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 	xvalues         = 0 to 40 by 4,
 	nolegend        = ,
 	interval        = week, /* null for Day. Choose from Week, Month to show week or month view */
-	Generated_Code	= Y
+	Generate_Code	= Y
 )
 ~~~
 **Example 1. colorStyle=OncoPlotter (with durable line)**  
