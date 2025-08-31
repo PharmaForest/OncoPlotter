@@ -50,7 +50,8 @@
 *
 * Author:     Yutaka Morioka
 * Date:        2025-06-24
-* Version:     0.1
+* Update:     2025-09-01 (Bug Fix)
+* Version:     0.3.2
 
 *//*** HELP END ***/
 
@@ -113,7 +114,7 @@ end;
 keep USUBJID -- CNSR;
 run;
 
-proc sort data=dummy_adtte(keep=&groupn. &groupc.) out=group_fmt nodupkey;
+proc sort data=&data.(keep=&groupn. &groupc.) out=group_fmt nodupkey;
  by &groupn. &groupc.;
 run;
 data group_fmt;
@@ -129,7 +130,7 @@ ods graphics on;
 ods noresults;
 ods select none;
 ods output Survivalplot=SurvivalPlotData;
-proc lifetest data=dummy_adtte
+proc lifetest data=&data.
   plots=survival(atrisk=&AxisValues.);
   time &Time_var. * &Censore_var.(&Censore_val.);
   strata &groupn. ;
