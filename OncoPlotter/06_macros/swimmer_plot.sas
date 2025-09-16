@@ -52,8 +52,8 @@ You can test swimmer_plot macro usin the datasets.
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
 
 * Author:     Ryo Nakaya
-* Date:        2025-07-14
-* Version:     0.2
+* Date:        2025-09-16
+* Version:     0.3
 
 *//*** HELP END ***/
 
@@ -277,7 +277,10 @@ ods graphics / reset=all ;
 
 /*@@@@@@@@*/
 %if %upcase(&Generate_Code) =Y %then %do;
-  options noxwait noxsync;
+  %*-- Only for Windows system --*;
+  %if %index(%upcase(&SYSSCP), WIN) > 0 %then %do;
+    options noxwait noxsync;
+  %end;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;

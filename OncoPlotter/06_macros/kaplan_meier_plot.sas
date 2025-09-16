@@ -51,7 +51,8 @@
 * Author:     Yutaka Morioka
 * Date:        2025-06-24
 * Update:     2025-09-01 (Bug Fix)
-* Version:     0.3.2
+* Update:	 2025-09-16 (minor change)
+* Version:     0.3.3
 
 *//*** HELP END ***/
 
@@ -192,7 +193,10 @@ run;
 title;
 
 %if %upcase(&Generate_Code) =Y %then %do;
-  options noxwait noxsync;
+  %*-- Only for Windows system --*;
+  %if %index(%upcase(&SYSSCP), WIN) > 0 %then %do;
+    options noxwait noxsync;
+  %end;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;
