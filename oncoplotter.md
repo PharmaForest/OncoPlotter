@@ -9,23 +9,53 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.3.2
-- Generated: 2025-09-01T01:20:05
+- Version: 0.3.3
+- Generated: 2025-09-16T17:22:13
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*BBB23BA33E482C26FF4463DF9D7AF53ACE9C3C134470DD2FBD31E3A830A3A584` for this version
-- Content SHA256: `C*A4014EF50E6E54EC5273C64817237075061C58D1D94F02F235761757389810D2` for this version
+- File SHA256: `F*5D1013E14F5365D762DECC765F74706254C079892C28BDCC4A11046197B76D4C` for this version
+- Content SHA256: `C*BFADE1AA8581CEE5806D52FFECCF5B8A9610CEBA07D5376B2919DFA58ADE8846` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.3.2`;
+# The `OncoPlotter` package, version: `0.3.3`;
   
 ---
  
-A SAS package to create figures commonly created in oncology studies.
-- %kaplan_meier_plot
-- %swimmer_plot
+
+## ?? OncoPlotter
+
+**A SAS package to create figures commonly used in oncology studies.**
+
+OncoPlotter is a SAS macro package designed to easily generate key figures typically required in oncology clinical trials.  
+It supports Kaplan-Meier plots, Swimmer plots, and Waterfall plots?ready for both clinical study reports and publications.  
+The package also provides dummy datasets, allowing you to test each macro without preparing your own data.  
+This makes it especially useful for both beginners and advanced users in the oncology data field.  
+
+### Main Features
+
+- ?**Kaplan-Meier Plot (`%kaplan_meier_plot`)**  
+  - Creates survival curves by treatment group  
+  - Displays censoring marks and number-at-risk below the plot  
+  - Fully customizable axis labels, line colors, patterns, and plot titles  
+  - Option to output generated SAS code via the `MFILE` option  
+  - Includes internal dummy dataset (`dummy_adtte`) for quick testing
+
+- ?**Swimmer Plot (`%swimmer_plot`)**  
+  - Visualizes individual treatment durations, responses, ongoing treatments, and death  
+  - Accepts ADSL and ADRS-format input datasets  
+  - Color grouping by disease stage and response categories (e.g., CR, PR, SD, PD)  
+  - Allows customization of plot size, subjects per page, and theme colors  
+  - Supports predefined color styles like "OncoPlotter", "Kyoto", "Osaka", and more
+
+- ?**Waterfall Plot (`%waterfall_plot`)**  
+  - Displays percentage tumor size change for each subject as bars  
+  - Bars are grouped and color-coded by response or treatment group  
+  - Includes threshold lines for PR/PD classification  
+  - Suitable for visualizing best overall response
+
+---
   
 ---
  
@@ -47,31 +77,40 @@ Required SAS Components:
 # The `OncoPlotter` package content
 The `OncoPlotter` package consists of the following content:
  
-1. [`_01_adsl_dummy` data ](#01adsldummy-data-1 )
-2. [`_02_adrs_dummy` data ](#02adrsdummy-data-2 )
-3. [`_03_adtr_dummy` data ](#03adtrdummy-data-3 )
-4. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-4 )
-5. [`%sp_change()` macro ](#spchange-macros-5 )
-6. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-6 )
-7. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-7 )
-8. [`%sp_split_plot()` macro ](#spsplitplot-macros-8 )
-9. [`%swimmer_plot()` macro ](#swimmerplot-macros-9 )
-10. [`%waterfall_plot()` macro ](#waterfallplot-macros-10 )
+1. [`01_adsl_dummy` data ](#01adsldummy-data-1 )
+2. [`02_adrs_dummy` data ](#02adrsdummy-data-2 )
+3. [`_02_adrs_dummy` data ](#02adrsdummy-data-3 )
+4. [`_03_adtr_dummy` data ](#03adtrdummy-data-4 )
+5. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-5 )
+6. [`%sp_change()` macro ](#spchange-macros-6 )
+7. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-7 )
+8. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-8 )
+9. [`%sp_split_plot()` macro ](#spsplitplot-macros-9 )
+10. [`%swimmer_plot()` macro ](#swimmerplot-macros-10 )
+11. [`%waterfall_plot()` macro ](#waterfallplot-macros-11 )
   
  
-11. [License note](#license)
-  
----
- 
-## `_01_adsl_dummy` data <a name="01adsldummy-data-1"></a> ######
-
-## Create dummy datasets
-ADSL_DUMMY
-
+12. [License note](#license)
   
 ---
  
-## `_02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
+## `01_adsl_dummy` data <a name="01adsldummy-data-1"></a> ######
+
+ ## Create dummy datasets
+   ADSL_DUMMY
+
+  
+---
+ 
+## `02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
+
+ ## Create dummy datasets
+   ADRS_DUMMY
+
+  
+---
+ 
+## `_02_adrs_dummy` data <a name="02adrsdummy-data-3"></a> ######
 
 ## Create dummy datasets
 ADRS_DUMMY
@@ -79,7 +118,7 @@ ADRS_DUMMY
   
 ---
  
-## `_03_adtr_dummy` data <a name="03adtrdummy-data-3"></a> ######
+## `_03_adtr_dummy` data <a name="03adtrdummy-data-4"></a> ######
 
 ## Create dummy datasets
 ADTR_DUMMY
@@ -87,7 +126,7 @@ ADTR_DUMMY
   
 ---
  
-## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-4"></a> ######
+## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-5"></a> ######
 
 * Program:     kaplan_meier_plot.txt
 * Macro:       %kaplan_meier_plot
@@ -140,12 +179,13 @@ ADTR_DUMMY
 * Author:     Yutaka Morioka
 * Date:        2025-06-24
 * Update:     2025-09-01 (Bug Fix)
-* Version:     0.3.2
+* Update:	 2025-09-16 (minor change)
+* Version:     0.3.3
 
   
 ---
  
-## `%sp_change()` macro <a name="spchange-macros-5"></a> ######
+## `%sp_change()` macro <a name="spchange-macros-6"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
 
@@ -159,7 +199,7 @@ Change separater of | to "","" (e.g. CR | PR | SD   ->   "CR","PR","SD")
   
 ---
  
-## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-6"></a> ######
+## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-7"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
 
@@ -179,7 +219,7 @@ Create format for groupvar (e.g.
   
 ---
  
-## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-7"></a> ######
+## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-8"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
 
@@ -199,7 +239,7 @@ Create format for response (e.g.
   
 ---
  
-## `%sp_split_plot()` macro <a name="spsplitplot-macros-8"></a> ######
+## `%sp_split_plot()` macro <a name="spsplitplot-macros-9"></a> ######
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
@@ -211,7 +251,7 @@ This macro is main functionality including sgplot.
   
 ---
  
-## `%swimmer_plot()` macro <a name="swimmerplot-macros-9"></a> ######
+## `%swimmer_plot()` macro <a name="swimmerplot-macros-10"></a> ######
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
@@ -265,14 +305,15 @@ You can test swimmer_plot macro usin the datasets.
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
 
 * Author:     Ryo Nakaya
-* Date:        2025-07-14
-* Version:     0.2
+* Date:        2025-09-16
+* Version:     0.3
 
   
 ---
  
-## `%waterfall_plot()` macro <a name="waterfallplot-macros-10"></a> ######
+## `%waterfall_plot()` macro <a name="waterfallplot-macros-11"></a> ######
 
+/*************************************************************************
 * Program:     Waterfall_Plot.sas
 * Macro:       %Waterfall_Plot
 *
