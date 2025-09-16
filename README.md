@@ -69,8 +69,8 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 
  Author:     Yutaka Morioka<br>
  Date:        2025-06-24<br>
- Update Date:  2025-09-01<br>
- Version:     0.3.2<br>
+ Update Date:  2025-09-16<br>
+ Version:     0.3.3<br>
 
 # %swimmer_plot</a> 
 <br>
@@ -124,7 +124,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2025-07-23<br>
+ Date:        2025-09-16<br>
  Version:     0.3<br>
 
 
