@@ -49,10 +49,10 @@
 *   );
 *
 * Author:     Yutaka Morioka
-* Date:        2025-06-24
+* First Release Date:        2025-06-24
 * Update:     2025-09-01 (Bug Fix)
 * Update:	 2025-09-16 (minor change)
-* Version:     0.3.3
+* Latest Update Date:	 2025-09-18 (minor change)
 
 *//*** HELP END ***/
 
@@ -67,7 +67,6 @@ Censore_val = 1 ,
 Title = %nrbquote(Kaplan-Meier Plot),
 Group_color_list =%nrbquote(black black black black),
 Group_linepattern_list =%nrbquote(solid shortdash longdash dash),
-
 XLABEL =%nrbquote( Survival Time (Month)),
 YLABEL =%nrbquote( Probability of Survival),
 AxisValues =%nrbquote (0 to 16 by 2),
@@ -75,13 +74,11 @@ Generate_Code =Y
 );
 %let codepath = %sysfunc(pathname(WORK));
 %put &codepath;
-
 options nomfile;
 %if %upcase(&Generate_Code) =Y %then %do;
-  filename mprint "&codepath.\kaplan_meier_plot&sysindex..txt";
-  options mfile mprint;
+filename mprint "&codepath./kaplan_meier_plot&sysindex..txt";
+options mfile mprint;
 %end;
-
 data dummy_adtte;
 attrib
 USUBJID label="Unique Subject Identifier" length=$20.
@@ -93,105 +90,97 @@ PARAMN  label="Parameter (N)" length=8.
 AVAL  label="Analysis Value" length=8.
 CNSR  label="Censor" length=8.
 ;
-call streaminit(1982); 
+call streaminit(1982);
 do TRTPN = 1 to 4;
-  do _USUBJID = 1 to 100;
-      do PARAMN = 1 to 1;
-          if TRTPN =1 then time =rand('WEIBULL', 1.5, 10);
-          else if TRTPN =2 then time =rand('WEIBULL', 1.5, 7);
-          else if TRTPN =3 then time =rand('WEIBULL', 1.5, 3);
-          else time =rand('WEIBULL', 1.5, 5);
-          USUBJID = cats(TRTPN,_USUBJID);
-          censor_limit = rand('UNIFORM') * 15;
-          CNSR = ^(time <= censor_limit);
-          AVAL = min(time, censor_limit);
-          TRTP = choosec(TRTPN,"XXXXX","YYYY","ZZZZZ","Placebo");
-          PARAMCD = choosec(PARAMN,"PFS");
-          PARAM = choosec(PARAMN,"Progression Free Survival (Months)");
-        output;
-      end;
-   end;
+do _USUBJID = 1 to 100;
+do PARAMN = 1 to 1;
+if TRTPN =1 then time =rand('WEIBULL', 1.5, 10);
+else if TRTPN =2 then time =rand('WEIBULL', 1.5, 7);
+else if TRTPN =3 then time =rand('WEIBULL', 1.5, 3);
+else time =rand('WEIBULL', 1.5, 5);
+USUBJID = cats(TRTPN,_USUBJID);
+censor_limit = rand('UNIFORM') * 15;
+CNSR = ^(time <= censor_limit);
+AVAL = min(time, censor_limit);
+TRTP = choosec(TRTPN,"XXXXX","YYYY","ZZZZZ","Placebo");
+PARAMCD = choosec(PARAMN,"PFS");
+PARAM = choosec(PARAMN,"Progression Free Survival (Months)");
+output;
+end;
+end;
 end;
 keep USUBJID -- CNSR;
 run;
-
 proc sort data=&data.(keep=&groupn. &groupc.) out=group_fmt nodupkey;
- by &groupn. &groupc.;
+by &groupn. &groupc.;
 run;
 data group_fmt;
-  set group_fmt;
-  FMTNAME = "$KM_GR";
-  START = cats(&groupn.);
-  LABEL = &groupc.;
+set group_fmt;
+FMTNAME = "$KM_GR";
+START = cats(&groupn.);
+LABEL = &groupc.;
 run;
 proc format cntlin=group_fmt;
 run;
- 
 ods graphics on;
 ods noresults;
 ods select none;
 ods output Survivalplot=SurvivalPlotData;
 proc lifetest data=&data.
-  plots=survival(atrisk=&AxisValues.);
-  time &Time_var. * &Censore_var.(&Censore_val.);
-  strata &groupn. ;
+plots=survival(atrisk=&AxisValues.);
+time &Time_var. * &Censore_var.(&Censore_val.);
+strata &groupn. ;
 run;
 proc sort data=SurvivalPlotData(keep = Stratum) out=Stratum nodupkey;
-  by Stratum;
+by Stratum;
 run;
 proc sort data=SurvivalPlotData(keep = tAtRisk) out=tAtRisk nodupkey;
 where ^missing(tAtRisk);
-  by tAtRisk;
+by tAtRisk;
 run;
 data atrisk;
 set Stratum;
 if _N_=1 then do;
-  declare hash h1(dataset:"SurvivalPlotData(keep=Stratum tAtRisk)");
-  h1.definekey("Stratum","tAtRisk");
-  h1.definedone();
+declare hash h1(dataset:"SurvivalPlotData(keep=Stratum tAtRisk)");
+h1.definekey("Stratum","tAtRisk");
+h1.definedone();
 end;
- do i=1 to obs;
-  set tAtRisk nobs=obs point=i;
-  AtRisk=0;
-  if h1.check() ne  0 then  output;
- end;
+do i=1 to obs;
+set tAtRisk nobs=obs point=i;
+AtRisk=0;
+if h1.check() ne  0 then  output;
+end;
 run;
-
 data SurvivalPlotData_1;
 set SurvivalPlotData atrisk;
 if ^missing(Censored) then do;
-  tick_marks_upper = Censored + 0.02;
-  tick_marks_lower = Censored - 0.02;
+tick_marks_upper = Censored + 0.02;
+tick_marks_lower = Censored - 0.02;
 end;
 run;
-
 ods results;
 ods select all;
 ods graphics / reset
-                     noborder
-                     noscale
-                     imagefmt=png
-                     width=745 px
-                     height=510 px
+noborder
+noscale
+imagefmt=png
+width=745 px
+height=510 px
 				             attrpriority=none;
 title "&Title";
 proc sgplot data=SurvivalPlotData_1 noborder noautolegend ;
 styleattrs datacontrastcolors=(&Group_color_list)
 				       datalinepatterns=(&Group_linepattern_list)
 ;
-  step x=time y=survival / group=stratum name='step' lineattrs=(thickness=2);
-  scatter x=time y=censored /noerrorcaps yerrorupper=tick_marks_upper yerrorlower=tick_marks_lower errorbarattrs=(pattern=1 thickness=2)  markerattrs=(size=0) GROUP=stratum;
-
-  xaxistable atrisk / x=tatrisk class=stratum location=outside colorgroup=stratum valueattrs=(size=10 ) ;
-  keylegend 'step' / location=inside position=topright across=1 noborder  valueattrs=(size=10) exclude=("") ;
-
-  yaxis label="&YLABEL." min=0 values=(0 0.2 0.4 0.5 0.6 0.8 1.0 ) offsetmax=0.03;
-  xaxis label="&XLABEL."  values=(&AxisValues.)  offsetmin=0.04 ;
-
-  format stratum $KM_GR. ;
+step x=time y=survival / group=stratum name='step' lineattrs=(thickness=2);
+scatter x=time y=censored /noerrorcaps yerrorupper=tick_marks_upper yerrorlower=tick_marks_lower errorbarattrs=(pattern=1 thickness=2)  markerattrs=(size=0) GROUP=stratum;
+xaxistable atrisk / x=tatrisk class=stratum location=outside colorgroup=stratum valueattrs=(size=10 ) ;
+keylegend 'step' / location=inside position=topright across=1 noborder  valueattrs=(size=10) exclude=("") ;
+yaxis label="&YLABEL." min=0 values=(0 0.2 0.4 0.5 0.6 0.8 1.0 ) offsetmax=0.03;
+xaxis label="&XLABEL."  values=(&AxisValues.)  offsetmin=0.04 ;
+format stratum $KM_GR. ;
 run;
 title;
-
 %if %upcase(&Generate_Code) =Y %then %do;
   %*-- Only for Windows system --*;
   %if %index(%upcase(&SYSSCP), WIN) > 0 %then %do;
@@ -200,9 +189,11 @@ title;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;
+    put "NOTE: Generated Program Code File: &codepath./kaplan_meier_plot&sysindex..txt";
   	call sleep(1,1);
   run;
-  %sysexec "&codepath.\kaplan_meier_plot&sysindex..txt";
-%end;
 
+  %*-- Open file when use XCMD --*;
+  %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./kaplan_meier_plot&sysindex..txt";
+%end;
 %mend;

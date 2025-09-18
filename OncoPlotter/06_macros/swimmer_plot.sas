@@ -2,11 +2,9 @@
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
-
 ### Sample code
 Datasets(adsl_dummy and adrs_dummy) are created in WORK library when OncoPlotter is installed.
 You can test swimmer_plot macro usin the datasets.
-
 ~~~sas
 %Swimmer_Plot(
 	adrs				= adrs_dummy,
@@ -44,16 +42,14 @@ You can test swimmer_plot macro usin the datasets.
 	Generate_Code = Y
 )
 ~~~
-
 ### prerequisites
- - Response data		: BDS ADaM dataset 
+- Response data		: BDS ADaM dataset
 		(USUBJID, AVAL, ADT, ADY)
- - Subject-level-data	: ADSL ADaM dataset
+- Subject-level-data	: ADSL ADaM dataset
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
-
 * Author:     Ryo Nakaya
-* Date:        2025-09-16
-* Version:     0.3
+* Latest udpate Date:        2025-09-18
+* Version:     0.3.1
 
 *//*** HELP END ***/
 
@@ -92,30 +88,26 @@ You can test swimmer_plot macro usin the datasets.
 	interval = ,	/* Can change time intervals from Day to Week or Month */
 	Generate_Code = Y
 	) ;
-
 /*@@@@@@@@*/
 options nomfile;
 %if %upcase(&Generate_Code) =Y %then %do;
-  %let codepath = %sysfunc(pathname(WORK));
-  %let sysind =&sysindex;
-  filename mprint "&codepath.\swimmer_plot&sysind..txt";
-  options mfile mprint;
+%let codepath = %sysfunc(pathname(WORK));
+%let sysind =&sysindex;
+filename mprint "&codepath./swimmer_plot&sysind..txt";
+options mfile mprint;
 %end;
 /*@@@@@@@@*/
-
 /* separator, formats*/
 %SP_change(var=responseC);
 %let responseN_comma = %sysfunc(tranwrd(&responseN, %str( ),%str(,))); /* to comma separated */
 %let responseN_n = %sysfunc(countw(&responseN, %str( ))); /*number of groupN*/
 %SP_make_respf_format()
-
 %if %superq(groupvar) ne %str() %then %do;
 	%SP_change(var=groupC);
 	%let groupN_comma = %sysfunc(tranwrd(&groupN, %str( ),%str(,))); /* to comma separated */
 	%let groupN_n = %sysfunc(countw(&groupN, %str( ))); /*number of groupN*/
 	%SP_make_groupf_format()
 %end ;
-
 /*==========================================================================*/
 /* merge ADRS and ADSL */
 proc sort data=&adsl. out=&adsl._sort ; by USUBJID ; run ;
@@ -126,84 +118,74 @@ data SWIM ;
 	by USUBJID ;
 	if A and B ;
 run ;
-
 /* Data 1:  Treatment duration data (per subject) */
 data ADSL_TRTDUR;
-  set &adsl._sort(where=(&whr_adsl.));
-  low = 0;
-  %if %superq(lstvstdt) ne %str() %then %do ;
+set &adsl._sort(where=(&whr_adsl.));
+low = 0;
+%if %superq(lstvstdt) ne %str() %then %do ;
 	high = min(TRTEDT, &lstvstdt.) - TRTSDT + 1;
-  %end ;
-  %else %do; high = TRTEDT - TRTSDT + 1; %end ;
-
-  if upcase(&eotvar.)="ONGOING" then endcap="arrow"; /* cap type */
-  else endcap="none";
+%end ;
+%else %do; high = TRTEDT - TRTSDT + 1; %end ;
+if upcase(&eotvar.)="ONGOING" then endcap="arrow"; /* cap type */
+else endcap="none";
 run;
 proc sort data=ADSL_TRTDUR out=ADSL_TRTDUR_SORT; /*sort descending order*/
-  by descending high;
+by descending high;
 run;
 data ADSL_TRTDUR_RANK;
-  set ADSL_TRTDUR_SORT;
-  item = _N_; /* variable for y-axis*/
+set ADSL_TRTDUR_SORT;
+item = _N_; /* variable for y-axis*/
 run;
 proc sort data=ADSL_TRTDUR_RANK ; by USUBJID ; run ;
-proc sort data=ADSL_TRTDUR_RANK out=SUBJID_LIST(keep=item USUBJID SUBJID); /* itemirankj and SUBJID */
-  by item;
+proc sort data=ADSL_TRTDUR_RANK out=SUBJID_LIST(keep=item USUBJID SUBJID); /* item?irank?j and SUBJID */
+by item;
 run;
-
 /* Data 2: Response duration data (per subject, response duration) */
 proc sort data=SWIM ;
-  by USUBJID ADT;
+by USUBJID ADT;
 run;
 data SWIM_RESPONSE;
-  set SWIM;
-  by USUBJID;
-  retain in_resp resp_start resp_start_avalc prev_prcr_adt;
-  
-  /* Initialize */
-  if first.USUBJID then do;
-    in_resp = 0;        /*response flag*/
-    resp_start = .;     /*response start*/
-    prev_prcr_adt = .; /*previous PR/CR ADT*/
-  end;
-
-  /* Start of PR/CR */
-  if AVAL in (%sysfunc(tranwrd(&crprN., %str( ), %str(,)))) then do;
-    if in_resp = 0 then do;         /* Start new duration */
-      resp_start = ADT;
-      resp_start_avalc = AVALC;   /* keep the first response */
-      in_resp = 1; 					  /*response flag=1*/
-    end;
-    prev_prcr_adt = ADT;            /* latest ADT of response */
-  end;
-
-  /* End of PR/CR ii.e. Not in (PR, CR) or Last observation)*/
-  if in_resp = 1 and (AVAL not in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) or last.USUBJID) then do;
-    if AVAL not in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) then resp_end = prev_prcr_adt ;
-    else if last.USUBJID and AVAL in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) then resp_end = ADT;
-    else resp_end = .;
-
-    /* output if not missing start and end */
-    if not missing(resp_start) and not missing(resp_end) and resp_end >= resp_start then do;
-      output;
-    end;
-    /* reset for another duration */
-    in_resp = 0;
-    resp_start = .;
-    resp_end = .;
-    prev_prcr_adt = .;
-  end;
-
-  format resp_start resp_end yymmdd10.;
-  keep USUBJID resp_start resp_end resp_start_avalc TRTSDT ;
+set SWIM;
+by USUBJID;
+retain in_resp resp_start resp_start_avalc prev_prcr_adt;
+/* Initialize */
+if first.USUBJID then do;
+in_resp = 0;        /*response flag*/
+resp_start = .;     /*response start*/
+prev_prcr_adt = .; /*previous PR/CR ADT*/
+end;
+/* Start of PR/CR */
+if AVAL in (%sysfunc(tranwrd(&crprN., %str( ), %str(,)))) then do;
+if in_resp = 0 then do;         /* Start new duration */
+resp_start = ADT;
+resp_start_avalc = AVALC;   /* keep the first response */
+in_resp = 1; 					  /*response flag=1*/
+end;
+prev_prcr_adt = ADT;            /* latest ADT of response */
+end;
+/* End of PR/CR ?ii.e. Not in (PR, CR) or Last observation)*/
+if in_resp = 1 and (AVAL not in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) or last.USUBJID) then do;
+if AVAL not in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) then resp_end = prev_prcr_adt ;
+else if last.USUBJID and AVAL in (%sysfunc(tranwrd(&crprN, %str( ), %str(,)))) then resp_end = ADT;
+else resp_end = .;
+/* output if not missing start and end */
+if not missing(resp_start) and not missing(resp_end) and resp_end >= resp_start then do;
+output;
+end;
+/* reset for another duration */
+in_resp = 0;
+resp_start = .;
+resp_end = .;
+prev_prcr_adt = .;
+end;
+format resp_start resp_end yymmdd10.;
+keep USUBJID resp_start resp_end resp_start_avalc TRTSDT ;
 run;
-
 data SWIM_RESPONSE2;
-  set SWIM_RESPONSE;
-  durable_low = resp_start - TRTSDT + 1;
-  durable_high = resp_end - TRTSDT + 1;
+set SWIM_RESPONSE;
+durable_low = resp_start - TRTSDT + 1;
+durable_high = resp_end - TRTSDT + 1;
 run;
-
 proc sql ; /*merge item to response duration data*/
 	create table SWIM_RESPONSE3 as
 	select a.* , b.SUBJID, b.item
@@ -215,7 +197,6 @@ data SWIM_RESPONSE4 ;
 	merge SWIM_RESPONSE3(in=A) &adsl._sort(where=(&whr_adsl.)) ;
 	by USUBJID ;
 run ;
-
 /* Data 3: Marker data(per subject, visit */
 proc sql ; /*merge item to marker data*/
 	create table MARKER as
@@ -224,35 +205,29 @@ proc sql ; /*merge item to marker data*/
 	left join SUBJID_LIST as b
 	on a.USUBJID = b.USUBJID ;
 quit ;
-
 data MARKER1;
-  set MARKER;
-  if not missing(DTHDT) then marker_d = DTHDT - TRTSDT + 1; /* Day of death */
+set MARKER;
+if not missing(DTHDT) then marker_d = DTHDT - TRTSDT + 1; /* Day of death */
 run;
-
 /* Set Data 1-3 */
 data PLOT_DATA;
 	length bar_type $10. ;
-  set 
-    ADSL_TRTDUR_RANK(in=A)        /* Treatment duration */
-    SWIM_RESPONSE4(in=B) 			/* Response duration */
+set
+ADSL_TRTDUR_RANK(in=A)        /* Treatment duration */
+SWIM_RESPONSE4(in=B) 			/* Response duration */
 	MARKER1(in=C) ;						/* Marker */
 	if A then bar_type="treat" ;
 	if B then bar_type="durable" ;
 	if C then bar_type="marker" ;
-
 	ymin=-1 ; /*for dummy plot(out of area) of cap for showing cap in legend*/
 run;
-
 /*==========================================================================*/
 /* number of subject */
 proc sort data=PLOT_DATA out=PLOT_DATA_NODUP nodupkey ; by USUBJID ; run ;
 proc sql noprint;
-  select count(*) into :ncase from PLOT_DATA_NODUP ;
+select count(*) into :ncase from PLOT_DATA_NODUP ;
 quit;
-
 %let npage = %sysfunc(ceil(%sysevalf(&ncase. / &nperpage.)));
-
 /*Week, Month*/
 %if %sysfunc(strip(%upcase(&interval.)))=WEEK %then %do ;
 	data PLOT_DATA ;
@@ -270,11 +245,9 @@ quit;
 		ADY=ADY_d/30.4375 ; marker_d=marker_d_d/30.4375 ;
 	run ;	
 %end ;
-
 ods graphics / width=&width.px height=&height.px;
 %SP_split_plot;
 ods graphics / reset=all ;
-
 /*@@@@@@@@*/
 %if %upcase(&Generate_Code) =Y %then %do;
   %*-- Only for Windows system --*;
@@ -284,12 +257,12 @@ ods graphics / reset=all ;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;
-    call sleep(1,1);
+    put "NOTE: Generated Program Code File: &codepath./swimmer_plot&sysind..txt";
+  	call sleep(1,1);
   run;
 
-  %sysexec "&codepath.\swimmer_plot&sysind..txt";
+  %*-- Open file when use XCMD --*;
+  %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./swimmer_plot&sysind..txt";
 %end;
 /*@@@@@@@@*/
-
 %mend ;
-
