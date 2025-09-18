@@ -208,7 +208,7 @@ Parameters:
 ---
  
 ## Version history  
-0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD
+0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD  
 0.3.3(16Sep2025)	: A bug fixed for Generate_code parameter to be used in case of Linux  
 0.3.2(01Sep2025)	: A bug fixed and made modification to &data parameter of Kaplan-Meier Plot  
 0.3.1(25Aug2025)	: Added parameter [VARWIDTH], [DPI], [Y_REFLINE] in waterfall plot. And fixed adrs_dummy.  
