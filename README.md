@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.3 on 16Seq2025)
+# OncoPlotter (Latest version 0.3.4 on 18Seq2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -69,8 +69,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 
  Author:     Yutaka Morioka<br>
  Date:        2025-06-24<br>
- Update Date:  2025-09-16<br>
- Version:     0.3.3<br>
+ Update Date:  2025-09-18<br>
 
 # %swimmer_plot</a> 
 <br>
@@ -124,8 +123,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2025-09-16<br>
- Version:     0.3<br>
+ Date:        2025-09-18<br>
 
 
 # %waterfall_plot</a> 
@@ -205,12 +203,12 @@ Parameters:
 
 
  Author:     Hiroki Yamanobe<br>
- Date:        2025-08-25<br>
- Version:     0.1<br>
+ Date:        2025-09-18<br>
 
 ---
  
 ## Version history  
+0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD
 0.3.3(16Sep2025)	: A bug fixed for Generate_code parameter to be used in case of Linux  
 0.3.2(01Sep2025)	: A bug fixed and made modification to &data parameter of Kaplan-Meier Plot  
 0.3.1(25Aug2025)	: Added parameter [VARWIDTH], [DPI], [Y_REFLINE] in waterfall plot. And fixed adrs_dummy.  
