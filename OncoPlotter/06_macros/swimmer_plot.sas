@@ -1,11 +1,13 @@
 /*** HELP START ***//*
 
-This is internal macro used in `%swimmer_plot`.
-This macro is main functionality including sgplot.
+This macro is main functionality to create swimmer plot.  
+
 ### Sample code
 Datasets(adsl_dummy and adrs_dummy) are created in WORK library when OncoPlotter is installed.
-You can test swimmer_plot macro usin the datasets.
+You can test swimmer_plot macro usin the datasets.  
+
 ~~~sas
+
 %Swimmer_Plot(
 	adrs				= adrs_dummy,
 	adsl				= adsl_dummy,
@@ -41,15 +43,16 @@ You can test swimmer_plot macro usin the datasets.
 	interval 			= week,
 	Generate_Code = Y
 )
+
 ~~~
 ### prerequisites
 - Response data		: BDS ADaM dataset
 		(USUBJID, AVAL, ADT, ADY)
 - Subject-level-data	: ADSL ADaM dataset
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
+
 * Author:     Ryo Nakaya
-* Latest udpate Date:        2025-09-18
-* Version:     0.3.1
+* Latest udpate Date:        2025-10-03
 
 *//*** HELP END ***/
 
@@ -245,7 +248,7 @@ quit;
 		ADY=ADY_d/30.4375 ; marker_d=marker_d_d/30.4375 ;
 	run ;	
 %end ;
-ods graphics / width=&width.px height=&height.px;
+ods graphics / attrpriority=none width=&width.px height=&height.px;
 %SP_split_plot;
 ods graphics / reset=all ;
 /*@@@@@@@@*/
