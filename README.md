@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.4 on 18Seq2025)
+# OncoPlotter (Latest version 0.3.5 on 3Oct2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -208,6 +208,7 @@ Parameters:
 ---
  
 ## Version history  
+0.3.5(2Oct2025)		: A bug fixed for options of ods graphics in swimmer plot    
 0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD  
 0.3.3(16Sep2025)	: A bug fixed for Generate_code parameter to be used in case of Linux  
 0.3.2(01Sep2025)	: A bug fixed and made modification to &data parameter of Kaplan-Meier Plot  
