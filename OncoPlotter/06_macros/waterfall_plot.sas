@@ -31,11 +31,12 @@
 *   groupColor=     Color list for group bars (e.g., red blue green)
 *
 *   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
-*   varWidth      =    Width of var (default: 0.7)
+*   varWidth=       Width of var (default: 0.7)
 *
 *   width=          Width of the plot in pixels (default: 840)
 *   height=         Height of the plot in pixels (default: 480)
 *   dpi=            DPI of the plot  (default: 300)
+*   imgPath=        Path of Image file (default: SAS Temporary Files)
 *
 *   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
 *   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
@@ -87,7 +88,8 @@ VarWidth     = 0.7,
 width     = 840,
 height    = 480,
 dpi       = 300,
-title   = ,
+imgPath   = C:/temp,
+title   = Figure 14.2.x,
 ytitle  = Change from Baseline (%),
 yvalues = -100 to 100 by 20,
 y_refline=20 40,
@@ -95,8 +97,7 @@ Generate_Code = Y
 );
 *
 * Author:     Hiroki Yamanobe
-* Latest udpate Date:       2025-09-18
-
+* Latest udpate Date:       2025-10-08
 
 *//*** HELP END ***/
 
@@ -114,9 +115,10 @@ groupC     = , /* Character values for group variable */
 groupColor = , /* Color Code for group */
 responseVar  = , /* Numeric variable for y-axis(Sum of Diameters) */
 VarWidth     = 0.7, /* Numeric variable for y-axis(Sum of Diameters) */
-width     = 840,  /* width of the plot */
-height    = 480,  /* height of the plot */
-dpi       = 300,  /* dpi of the plot */
+width     = 840,  /* Width of the plot */
+height    = 480,  /* Height of the plot */
+dpi       = 300,  /* DPI of the plot */
+imgPath   =,      /* Path of image file */
 title   = ,                         /* Title of the plot */
 ytitle  = Change from Baseline (%), /* title of y-axis */
 yvalues = -100 to 100 by 20,        /* range of y-axis */
@@ -192,7 +194,14 @@ run;
 %put &=max_refline.;
 /*==========================================================================*/
 /* Plot */
-ods html image_dpi=&dpi.;
+
+/* get temporary */
+%let _wk=%sysfunc(getoption(work));
+%put &=_wk ;
+%if %length(&imgPath.) > 1 %then %do; %let _wk=&imgPath.; %end;
+%put NOTE: Output path of image files: &_wk.;
+
+ods html image_dpi=&dpi. path="&_wk." file="sashtml.html";
 ods graphics / width=&width.px height=&height.px ;
 title "&title.";
 proc sgplot data=WATERFALL2 dattrmap=attrmapData;
