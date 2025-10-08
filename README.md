@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.5 on 3Oct2025)
+# OncoPlotter (Latest version 0.3.6 on 08Oct2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -156,6 +156,7 @@ Parameters:
   width=          Width of the plot in pixels (default: 840)
   height=         Height of the plot in pixels (default: 480)
   dpi=            DPI of the plot  (default: 300)
+  imgPath=        Path of image file (e.g., "C:/temp") (default: SAS Temporary Files path)
 
   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
@@ -189,6 +190,7 @@ Parameters:
   width     = 840,
   height    = 480,
   dpi       = 300, 
+  imgPath   = C:/temp, 
 
   title   = ,         
   ytitle  = Change from Baseline (%), 
@@ -203,11 +205,12 @@ Parameters:
 
 
  Author:     Hiroki Yamanobe<br>
- Date:        2025-09-18<br>
+ Date:        2025-10-08<br>
 
 ---
  
 ## Version history  
+0.3.6(8Oct2025)		: A bug fixed and added parameter [imgPath] in waterfall plot.  
 0.3.5(2Oct2025)		: A bug fixed for options of ods graphics in swimmer plot    
 0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD  
 0.3.3(16Sep2025)	: A bug fixed for Generate_code parameter to be used in case of Linux  
