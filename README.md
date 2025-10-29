@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.6 on 08Oct2025)
+# OncoPlotter (Latest version 0.3.7 on 29October2025)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -210,6 +210,7 @@ Parameters:
 ---
  
 ## Version history  
+0.3.7(29Oct2025)	: A bug fixed in swimmer plot.  
 0.3.6(8Oct2025)		: A bug fixed and added parameter [imgPath] in waterfall plot.  
 0.3.5(2Oct2025)		: A bug fixed for options of ods graphics in swimmer plot    
 0.3.4(18Sep2025)	: A bug fixed for Generate_code parameter to be used in case of NOXCMD  
