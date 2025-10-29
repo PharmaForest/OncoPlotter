@@ -4,8 +4,7 @@ This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
 
 * Author:     Ryo Nakaya
-* Date:        2025-07-05
-* Version:     0.1
+* Latest Date: 2025-10-29
 
 *//*** HELP END ***/
 
@@ -146,11 +145,12 @@ This macro is main functionality including sgplot.
           highcap=endcap legendlabel="&groupLabel"
 		  name="group" ;
          %end;
-        %else %do;
+        %else %do;/*no groupvar (color for highlow)*/
           format AVAL respf.;
           highlow y=item low=low high=high /
             type=bar fill nooutline
             lineattrs=(color=black) transparency=0
+			%if %superq(colorStyle) ne %str() %then %do;
  			  %if %sysfunc(strip(%upcase(&colorStyle.))) = ONCOPLOTTER %then %do ; 
 				  fillattrs=(color=CX85A0B8)
 			  %end ;
@@ -166,6 +166,10 @@ This macro is main functionality including sgplot.
 			  %else %if %sysfunc(strip(%upcase(&colorStyle.))) = OSAKA %then %do ; 
 				  fillattrs=(color=CXFFF200)
 			  %end ;
+			%end;
+			%else %do ; /*without colorStyle*/
+				  fillattrs=(color=&groupColor.)
+			%end ;
             highcap=endcap
             name="group";
         %end;
@@ -198,9 +202,13 @@ This macro is main functionality including sgplot.
 					datasymbols=(&markerSymbol.) ;
 		    %end ;
 		%end ;
-        %else %do;
-          /* no groupvar */
-          styleattrs datacolors=(CX283E59); 
+        %else %do;/* no groupvar */
+		  %if %superq(colorStyle) ne %str() %then %do;
+				styleattrs datasymbols=(squarefilled trianglefilled circlefilled X) ;
+		    %end ;
+ 		    %else %do ;
+				styleattrs datasymbols=(&markerSymbol.) ;
+		    %end ;
         %end;
 
 	   %if &durable. = Y %then %do ;
