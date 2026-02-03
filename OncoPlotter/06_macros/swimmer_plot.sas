@@ -1,10 +1,133 @@
 /*** HELP START ***//*
 
-This macro is main functionality to create swimmer plot.  
+### Macro:
+    %Swimmer_Plot
 
-### Sample code
-Datasets(adsl_dummy and adrs_dummy) are created in WORK library when OncoPlotter is installed.
-You can test swimmer_plot macro usin the datasets.  
+### Purpose:
+  Creates a swimmer plot to visualize treatment duration, response duration (CR/PR),
+  and clinical events (e.g., death) for each subject using ADaM datasets.
+
+### Parameters:
+
+#### Data inputs
+- `adrs` (required) :
+  Response dataset (BDS ADaM).
+  Expected variables include `USUBJID`, `AVAL`, `AVALC`, `ADT`, `ADY`.
+
+- `adsl` (required) :
+  Subject-level dataset (ADSL ADaM).
+  Expected variables include `USUBJID`, `SUBJID`, `TRTSDT`, `TRTEDT`, `DTHDT`
+  and the variable specified in `eotvar`.
+
+- `whr_adrs` (optional, default=blank) :
+  WHERE condition applied to the response dataset.
+
+- `whr_adsl` (optional, default=blank) :
+  WHERE condition applied to the subject-level dataset.
+
+- `eotvar` (required) :
+  End-of-treatment status variable.
+  If its value equals `"ONGOING"` (case-insensitive), an arrow endcap is drawn.
+
+- `lstvstdt` (optional, default=blank) :
+  Alternative last visit date used when `TRTEDT` is missing or incomplete.
+  Treatment duration is calculated as `min(TRTEDT, lstvstdt) - TRTSDT + 1`.
+
+#### Response definition
+- `crprN` (optional, default=`1 2`) :
+  Numeric values of `AVAL` considered as CR or PR.
+
+- `responseN` (required, default=`1 2 3 4`) :
+  Numeric values of response categories.
+
+- `responseC` (required, default=`CR | PR | SD | PD`) :
+  Character labels corresponding to `responseN`.
+  Values must be separated by `|`.
+
+- `responseLabel` (optional, default=`Response`) :
+  Label for response legend.
+
+#### Durable response display
+- `durable` (optional, default=`Y`) :
+  Specifies whether response-duration (durable period) lines are drawn.
+
+- `durableLabel` (optional, default=`Response period`) :
+  Legend label for the durable response period.
+
+#### Grouping
+- `groupvar` (optional, default=blank) :
+  Numeric grouping variable in `adsl`.
+
+- `groupN` (optional, default=blank) :
+  Numeric values for the grouping variable.
+
+- `groupC` (optional, default=blank) :
+  Character labels for the grouping variable.
+  Values must be separated by `|`.
+
+- `groupLabel` (optional, default=blank) :
+  Legend label for grouping categories.
+
+#### Event labels
+- `deathLabel` (optional, default=`Death`) :
+  Legend label for death marker.
+
+- `ongoingLabel` (optional, default=`Treatment Ongoing`) :
+  Legend label for ongoing-treatment indicator.
+
+#### Layout and appearance
+- `nperpage` (optional, default=`20`) :
+  Number of subjects displayed per page.
+
+- `width` (optional, default=`640`) :
+  Width of the output graphic in pixels.
+
+- `height` (optional, default=`480`) :
+  Height of the output graphic in pixels.
+
+- `subjidOn` (optional, default=`Y`) :
+  Displays subject ID when set to `Y`.
+
+- `title` (optional, default=blank) :
+  Title of the plot.
+
+- `ytitle` (optional, default=`Subject`) :
+  Title of the y-axis.
+
+- `xtitle` (optional, default=`Days from Treatment Start`) :
+  Title of the x-axis.
+
+- `xvalues` (optional, default=blank) :
+  X-axis tick specification (e.g., `0 to 40 by 4`).
+
+- `nolegend` (optional, default=blank) :
+  Suppresses legend when set to `Y`.
+
+#### Style
+- `colorStyle` (optional, default=`OncoPlotter`) :
+  Preset color style.
+  Supported values include `OncoPlotter`, `Salmon`, `Kawaii`, `Kyoto`, `Osaka`.
+
+- `groupColor` (optional, default=`orange`) :
+  Color for group categories when `colorStyle` is blank.
+
+- `markerColor` (optional, default=`red`) :
+  Color for markers when `colorStyle` is blank.
+
+- `markerSymbol` (optional, default=blank) :
+  Marker symbol when `colorStyle` is blank.
+
+#### Time scale
+- `interval` (optional, default=blank) :
+  Time-unit conversion.
+  Permitted values (case-insensitive):
+  - `WEEK`  : days divided by 7
+  - `MONTH` : days divided by 30.4375
+
+#### Code generation
+- `Generate_Code` (optional, default=`Y`) :
+  When set to `Y`, generates the underlying program code
+  and writes it to a text file in the WORK directory.
 
 ~~~sas
 
@@ -51,8 +174,12 @@ You can test swimmer_plot macro usin the datasets.
 - Subject-level-data	: ADSL ADaM dataset
 		(USUBJID, SUBJID, TRTSDT, TRTEDT, DTHDT)
 
+### URL:
+
+https://github.com/PharmaForest/OncoPlotter
+
 * Author:     Ryo Nakaya
-* Latest udpate Date:        2025-10-03
+* Latest udpate Date:        2026-01-19
 
 *//*** HELP END ***/
 
@@ -80,8 +207,8 @@ You can test swimmer_plot macro usin the datasets.
 	height		= 480,	/* height of the plot */
 	subjidOn = Y , /* Y for showing subject ID */
 	colorStyle = OncoPlotter,	/* OncoPlotter, Salmon, Kawaii, Kyoto, Osaka */
-	groupColor = ,	/* Color for group categories (Effective when colorStyle is null.) */
-	markerColor = ,	/* Color for marker (Effective when colorStyle is null) */
+	groupColor = orange,	/* Color for group categories (Effective when colorStyle is null.) */
+	markerColor = red,	/* Color for marker (Effective when colorStyle is null) */
 	markerSymbol = ,	/* Symbols for marker (Effective when colorStyle is null) */
 	title = ,	/* Title of the plot */
 	ytitle = Subject,	/* Title for y-axis */
@@ -91,6 +218,7 @@ You can test swimmer_plot macro usin the datasets.
 	interval = ,	/* Can change time intervals from Day to Week or Month */
 	Generate_Code = Y
 	) ;
+
 /*@@@@@@@@*/
 options nomfile;
 %if %upcase(&Generate_Code) =Y %then %do;
@@ -100,6 +228,7 @@ filename mprint "&codepath./swimmer_plot&sysind..txt";
 options mfile mprint;
 %end;
 /*@@@@@@@@*/
+
 /* separator, formats*/
 %SP_change(var=responseC);
 %let responseN_comma = %sysfunc(tranwrd(&responseN, %str( ),%str(,))); /* to comma separated */
@@ -111,6 +240,7 @@ options mfile mprint;
 	%let groupN_n = %sysfunc(countw(&groupN, %str( ))); /*number of groupN*/
 	%SP_make_groupf_format()
 %end ;
+
 /*==========================================================================*/
 /* merge ADRS and ADSL */
 proc sort data=&adsl. out=&adsl._sort ; by USUBJID ; run ;
@@ -121,6 +251,7 @@ data SWIM ;
 	by USUBJID ;
 	if A and B ;
 run ;
+
 /* Data 1:  Treatment duration data (per subject) */
 data ADSL_TRTDUR;
 set &adsl._sort(where=(&whr_adsl.));
@@ -143,6 +274,7 @@ proc sort data=ADSL_TRTDUR_RANK ; by USUBJID ; run ;
 proc sort data=ADSL_TRTDUR_RANK out=SUBJID_LIST(keep=item USUBJID SUBJID); /* item?irank?j and SUBJID */
 by item;
 run;
+
 /* Data 2: Response duration data (per subject, response duration) */
 proc sort data=SWIM ;
 by USUBJID ADT;
@@ -200,6 +332,7 @@ data SWIM_RESPONSE4 ;
 	merge SWIM_RESPONSE3(in=A) &adsl._sort(where=(&whr_adsl.)) ;
 	by USUBJID ;
 run ;
+
 /* Data 3: Marker data(per subject, visit */
 proc sql ; /*merge item to marker data*/
 	create table MARKER as
@@ -212,6 +345,7 @@ data MARKER1;
 set MARKER;
 if not missing(DTHDT) then marker_d = DTHDT - TRTSDT + 1; /* Day of death */
 run;
+
 /* Set Data 1-3 */
 data PLOT_DATA;
 	length bar_type $10. ;
@@ -224,6 +358,7 @@ SWIM_RESPONSE4(in=B) 			/* Response duration */
 	if C then bar_type="marker" ;
 	ymin=-1 ; /*for dummy plot(out of area) of cap for showing cap in legend*/
 run;
+
 /*==========================================================================*/
 /* number of subject */
 proc sort data=PLOT_DATA out=PLOT_DATA_NODUP nodupkey ; by USUBJID ; run ;
@@ -251,6 +386,7 @@ quit;
 ods graphics / attrpriority=none width=&width.px height=&height.px;
 %SP_split_plot;
 ods graphics / reset=all ;
+
 /*@@@@@@@@*/
 %if %upcase(&Generate_Code) =Y %then %do;
   %*-- Only for Windows system --*;
@@ -268,4 +404,5 @@ ods graphics / reset=all ;
   %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./swimmer_plot&sysind..txt";
 %end;
 /*@@@@@@@@*/
+
 %mend ;
