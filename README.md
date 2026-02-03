@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.7 on 29October2025)
+# OncoPlotter (Latest version 0.3.8 on 29January2026)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -123,7 +123,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2025-09-18<br>
+ Date:        2026-01-29<br>
 
 
 # %waterfall_plot</a> 
@@ -210,6 +210,7 @@ Parameters:
 ---
  
 ## Version history  
+0.3.8(29Jan2026)	: Default parameters have been changed in swimmer plot. Enhanced help information as well.    
 0.3.7(29Oct2025)	: A bug fixed in swimmer plot.  
 0.3.6(8Oct2025)		: A bug fixed and added parameter [imgPath] in waterfall plot.  
 0.3.5(2Oct2025)		: A bug fixed for options of ods graphics in swimmer plot    
