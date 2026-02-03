@@ -56,16 +56,19 @@ ods graphics / reset=all
 )
 
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\swimmer_test08.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\swimmer_test08.png,
   desc   =  (%nrstr(%swimmer_plot))[test08] groupvar colorStyle=null Individually specify the colors and symbols (1/3) , 
   outds  = TEMP.oncoplotter_test
 );
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\swimmer_test081.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\swimmer_test081.png,
   desc   =  (%nrstr(%swimmer_plot))[test08] groupvar colorStyle=null Individually specify the colors and symbols (2/3) , 
   outds  = TEMP.oncoplotter_test
 );
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\swimmer_test082.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\swimmer_test082.png,
   desc   =  (%nrstr(%swimmer_plot))[test08] groupvar colorStyle=null Individually specify the colors and symbols (3/3) , 
   outds  = TEMP.oncoplotter_test

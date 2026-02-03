@@ -56,11 +56,13 @@ ods graphics / reset=all
 )
 
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\swimmer_test02.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\swimmer_test02.png,
   desc   =  (%nrstr(%swimmer_plot))[test02] Standard parameters test (1/2), 
   outds  = TEMP.oncoplotter_test
 );
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\swimmer_test021.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\swimmer_test021.png,
   desc   =  (%nrstr(%swimmer_plot))[test02] Standard parameters test (2/2), 
   outds  = TEMP.oncoplotter_test
