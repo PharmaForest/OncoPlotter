@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.3.8 on 29January2026)
+# OncoPlotter (Latest version 0.4.0 on 05February2026)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -6,6 +6,7 @@ The repository is a collaborative project.
  - **%kaplan_meier_plot**
  - **%swimmer_plot**
  - **%waterfall_plot**
+ - **%forest_plot**
   
 ---
 
