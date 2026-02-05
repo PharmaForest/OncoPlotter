@@ -194,13 +194,11 @@ run;
 %put &=max_refline.;
 /*==========================================================================*/
 /* Plot */
-
 /* get temporary */
 %let _wk=%sysfunc(getoption(work));
 %put &=_wk ;
 %if %length(&imgPath.) > 1 %then %do; %let _wk=&imgPath.; %end;
 %put NOTE: Output path of image files: &_wk.;
-
 ods html image_dpi=&dpi. path="&_wk." file="sashtml.html";
 ods graphics / width=&width.px height=&height.px ;
 title "&title.";
@@ -221,19 +219,18 @@ run;
 ods graphics / reset=all ;
 /*@@@@@@@@ Generate_Code end */
 %if %upcase(&Generate_Code) =Y %then %do;
-  %*-- Only for Windows system --*;
-  %if %index(%upcase(&SYSSCP), WIN) > 0  %then %do;
-    options noxwait noxsync;
-  %end;
-  options nomprint nomfile;
-  filename mprint clear;
-  data _null_;
-    put "NOTE: Generated Program Code File: &codepath./waterfall_plot&sysind..txt";
-  	call sleep(1,1);
-  run;
-
-  %*-- Open file when use XCMD --*;
-  %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./waterfall_plot&sysind..txt";
+%*-- Only for Windows system --*;
+%if %index(%upcase(&SYSSCP), WIN) > 0  %then %do;
+options noxwait noxsync;
+%end;
+options nomprint nomfile;
+filename mprint clear;
+data _null_;
+put "NOTE: Generated Program Code File: &codepath./waterfall_plot&sysind..txt";
+	call sleep(1,1);
+run;
+%*-- Open file when use XCMD --*;
+%if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./waterfall_plot&sysind..txt";
 %end;
 /*@@@@@@@@*/
 %mend Waterfall_Plot;

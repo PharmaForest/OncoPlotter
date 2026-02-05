@@ -52,7 +52,7 @@
 * First Release Date:        2025-06-24
 * Update:     2025-09-01 (Bug Fix)
 * Update:	 2025-09-16 (minor change)
-* Latest Update Date:	 2025-09-18 (minor change)
+* Update:	 2026-02-05 (bug fix--generate coe)
 
 *//*** HELP END ***/
 
@@ -76,7 +76,8 @@ Generate_Code =Y
 %put &codepath;
 options nomfile;
 %if %upcase(&Generate_Code) =Y %then %do;
-filename mprint "&codepath./kaplan_meier_plot&sysindex..txt";
+%let sysind =&sysindex;
+filename mprint "&codepath./kaplan_meier_plot&sysind..txt";
 options mfile mprint;
 %end;
 data dummy_adtte;
@@ -189,11 +190,11 @@ title;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;
-    put "NOTE: Generated Program Code File: &codepath./kaplan_meier_plot&sysindex..txt";
+    put "NOTE: Generated Program Code File: &codepath./kaplan_meier_plot&sysind..txt";
   	call sleep(1,1);
   run;
 
   %*-- Open file when use XCMD --*;
-  %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./kaplan_meier_plot&sysindex..txt";
+  %if %sysfunc(getoption(xcmd))=XCMD %then %sysexec "&codepath./kaplan_meier_plot&sysind..txt";
 %end;
 %mend;
