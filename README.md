@@ -210,6 +210,7 @@ Parameters:
 ---
  
 ## Version history  
+0.4.0(05Feb2026)	: Added forest plot.  A bug fixed in kaplan-meier plot's gerate code function.  
 0.3.8(29Jan2026)	: Default parameters have been changed in swimmer plot. Enhanced help information as well.    
 0.3.7(29Oct2025)	: A bug fixed in swimmer plot.  
 0.3.6(8Oct2025)		: A bug fixed and added parameter [imgPath] in waterfall plot.  
