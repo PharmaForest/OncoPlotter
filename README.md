@@ -263,6 +263,7 @@ Parameters:
 ~~~
 
 Usage Example:  
+~~~sas
   %forest_plot(
     data=dummy_forest_test,
     out1=col1,
@@ -284,6 +285,7 @@ Usage Example:
     marker_color=black,
     Generate_Code=Y
   );
+~~~
 
   <img width="552" height="395" alt="image" src="https://github.com/user-attachments/assets/ec3056aa-3336-44b3-b187-221830f4be77" />
 
