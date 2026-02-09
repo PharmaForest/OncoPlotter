@@ -188,13 +188,16 @@ proc sgplot data=wk_forest nowall noborder nocycleattrs noautolegend sganno = fo
 run;
 
 %if %upcase(&Generate_Code) =Y %then %do;
-  options noxwait noxsync;
+%*-- Only for Windows system --*;
+%if %index(%upcase(&SYSSCP), WIN) > 0 %then %do;
+options noxwait noxsync;
+%end;
   options nomprint nomfile;
   filename mprint clear;
   data _null_;
   	call sleep(1,1);
   run;
-  %sysexec "&codepath.\forest_plot&ind..txt";
+%if %sysfunc(getoption(xcmd))=XCMD %then  %sysexec "&codepath.\forest_plot&ind..txt";
 %end;
 
 %mend forest_plot;
