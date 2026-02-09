@@ -1,7 +1,7 @@
 Type : Package
 Package : OncoPlotter
 Title : OncoPlotter--A SAS package to create figures commonly created in oncology studies
-Version : 0.4.0
+Version : 0.5.0
 Author : [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 Maintainer : [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 License : MIT
@@ -13,7 +13,7 @@ DESCRIPTION START:
 ##  OncoPlotter
 **A SAS package to create figures commonly used in oncology studies.**
 OncoPlotter is a SAS macro package designed to easily generate key figures typically required in oncology clinical trials.
-It supports Kaplan-Meier plots, Swimmer plots, and Waterfall plots ready for both clinical study reports and publications.
+It supports Kaplan-Meier plots, Swimmer plots, Waterfall plots, Forest Plot and Spider Plot ready for both clinical study reports and publications.
 The package also provides dummy datasets, allowing you to test each macro without preparing your own data.
 This makes it especially useful for both beginners and advanced users in the oncology data field.
 ### Main Features
