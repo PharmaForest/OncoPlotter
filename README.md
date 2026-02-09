@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.4.0 on 05February2026)
+# OncoPlotter (Latest version 0.5.0 on 09February2026)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -7,7 +7,7 @@ The repository is a collaborative project.
  - **%swimmer_plot**
  - **%waterfall_plot**
  - **%forest_plot**
-  
+ - **%spider_plot**
 ---
 
 # %kaplan_meier_plot</a> 
@@ -289,11 +289,97 @@ Usage Example:
 
   <img width="552" height="395" alt="image" src="https://github.com/user-attachments/assets/ec3056aa-3336-44b3-b187-221830f4be77" />
 
+ Author:     Yutaka Morioka<br>
+ Date:        2026-02-05<br>
+---
 
-  
+
+# %spider_plot</a> 
+
+Macro:    spider_plot
+
+Purpose:  
+  Create a spider (subject profile) plot using PROC SGPLOT. 
+  The macro draws a series line (with markers) for each subject across
+  the specified X variable (e.g., study day) and Y variable (e.g., percent change).
+  Optional reference lines, custom axis labels/values, and code generation
+  (mprint dump) are supported.
+  A dummy input dataset is created within the macro for demonstration.
+
+Parameters:  
+~~~text
+  data               Input dataset  
+                     (default: dummy_spider)
+
+  xvar               X variable for the horizontal axis
+                     (default: ADY)
+
+  yvar               Y variable for the vertical axis
+                     (default: PCHG)
+
+  subject_var        Subject identifier used as GROUP= for the series
+                     (default: SUBJID)
+
+  subject_category   Optional category variable intended for color control
+                     via GROUPLC=/GROUPMC= in the SERIES statement
+                     (default: BOR)
+
+  xaxis_label        X-axis label
+                     (default: Days)
+
+  xaxis_values       X-axis values specification passed to
+                     XAXIS VALUES=()
+                     (default: 0 43 85 127 169 191 213 235)
+
+  yaxis_label        Y-axis label
+                     (default: Change rate from baseline (%))
+
+  yaxis_values       Y-axis values specification passed to
+                     YAXIS VALUES=()
+                     (default: -100 -75 -50 -30 0 20 50 75 100)
+
+  datacontrastcolors Color list for group lines/markers passed to
+                     STYLEATTRS DATACONTRASTCOLORS=()
+                     (default: Blue Red Green Yellow)
+
+  refline_value      Reference line value(s) on Y-axis
+                     (default: 0 20 -30)
+
+  curvelabel         Display curve labels on the series lines
+                     (Y/N, default: Y)
+
+  Generate_Code      Output expanded macro code (mprint) to a text file
+                     in the WORK directory and open it
+                     (Y/N, default: N)
+~~~
+
+Usage Example:  
+~~~sas
+  %spider_plot(
+    data = dummy_spider,
+    xvar = ADY,
+    yvar = PCHG,
+    subject_var = SUBJID,
+    subject_category = BOR,
+    xaxis_label = %nrbquote(Days),
+    xaxis_values = %nrbquote(0 43 85 127 169 191 213 235),
+    yaxis_label = %nrbquote(Change rate from baseline (%)),
+    yaxis_values = %nrbquote(-100 -75 -50 -30 0 20 50 75 100),
+    datacontrastcolors = %nrbquote(Blue Red Green Yellow),
+    refline_value = 0 20 -30,
+    curvelabel = Y,
+    Generate_Code = N
+  );
+~~~
+<img width="531" height="305" alt="image" src="https://github.com/user-attachments/assets/e4b421b9-4bf8-4d10-bd05-385ed06a4c46" />  
+
+
+ Author:     Yutaka Morioka<br>
+ Date:        2026-02-09<br>
 ---
  
 ## Version history  
+0.5.0(09Feb2026)	: Added spider plot.  A bug fixed in forest plot's gerate code function.   
 0.4.0(05Feb2026)	: Added forest plot.  A bug fixed in kaplan-meier plot's gerate code function.  
 0.3.8(29Jan2026)	: Default parameters have been changed in swimmer plot. Enhanced help information as well.    
 0.3.7(29Oct2025)	: A bug fixed in swimmer plot.  
