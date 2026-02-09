@@ -262,6 +262,9 @@ Parameters:
                   (Y/N, default: N)
 ~~~
 
+Author:     Yutaka Morioka<br>
+Date:        2026-02-05<br>
+
 Usage Example:  
 ~~~sas
   %forest_plot(
@@ -289,8 +292,6 @@ Usage Example:
 
   <img width="552" height="395" alt="image" src="https://github.com/user-attachments/assets/ec3056aa-3336-44b3-b187-221830f4be77" />
 
- Author:     Yutaka Morioka<br>
- Date:        2026-02-05<br>
 ---
 
 
@@ -353,6 +354,9 @@ Parameters:
                      (Y/N, default: N)
 ~~~
 
+Author:     Yutaka Morioka<br>
+Date:        2026-02-09<br>
+ 
 Usage Example:  
 ~~~sas
   %spider_plot(
@@ -373,9 +377,6 @@ Usage Example:
 ~~~
 <img width="531" height="305" alt="image" src="https://github.com/user-attachments/assets/e4b421b9-4bf8-4d10-bd05-385ed06a4c46" />  
 
-
- Author:     Yutaka Morioka<br>
- Date:        2026-02-09<br>
 ---
  
 ## Version history  
