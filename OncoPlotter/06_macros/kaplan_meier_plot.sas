@@ -20,8 +20,12 @@
 *   groupc=                Character group label variable (e.g., TRTP)
 *   wh=                    WHERE condition to subset data (optional)
 *   Time_var=              Time-to-event variable (e.g., AVAL)
-*   Censore_var=           Censoring indicator variable (e.g., CNSR)
-*   Censore_val=           Value indicating censored observations (e.g., 1)
+
+*   Censor_var=           Censoring indicator variable (e.g., CNSR)
+*   Censor_val=           Value indicating censored observations (e.g., 1)
+*  (formerly) Censore_var=           Censoring indicator variable (e.g., CNSR)
+*  (formerly) Censore_val=           Value indicating censored observations (e.g., 1)
+
 *   Title=                 Plot title (default: "Kaplan-Meier Plot")
 *   Group_color_list=      Color list for group lines (e.g., "black red blue green")
 *   Group_linepattern_list= Line pattern list for groups (e.g., "solid dash longdash dot")
@@ -37,8 +41,8 @@
 *       groupn = TRTPN,
 *       groupc = TRTP,
 *       Time_var = AVAL,
-*       Censore_var = CNSR,
-*       Censore_val = 1,
+*       Censor_var = CNSR,
+*       Censor_val = 1,
 *       Title = %nrquote(Kaplan-Meier Curve Example),
 *       Group_color_list = %nrquote(black red blue green),
 *       Group_linepattern_list = %nrquote(solid dash longdash shortdash),
@@ -53,6 +57,7 @@
 * Update:     2025-09-01 (Bug Fix)
 * Update:	 2025-09-16 (minor change)
 * Update:	 2026-02-05 (bug fix--generate coe)
+* Update:     2026-02-23 (changed parameter names: Censore -> Censor)  
 
 *//*** HELP END ***/
 
@@ -62,8 +67,10 @@ groupn = TRTPN ,
 groupc = TRTP ,
 wh = ,
 Time_var = AVAL ,
+Censor_var = ,
+Censor_val = ,
 Censore_var = CNSR ,
-Censore_val = 1 ,
+Censore_val = 1,
 Title = %nrbquote(Kaplan-Meier Plot),
 Group_color_list =%nrbquote(black black black black),
 Group_linepattern_list =%nrbquote(solid shortdash longdash dash),
@@ -72,6 +79,16 @@ YLABEL =%nrbquote( Probability of Survival),
 AxisValues =%nrbquote (0 to 16 by 2),
 Generate_Code =Y
 );
+
+/* Backward compatibility: use old params only when new ones are not provided */
+%if %superq(Censor_var) = %str() and %superq(Censore_var) ne %str() %then %do;
+  %let Censor_var = &Censore_var;
+%end;
+
+%if %superq(Censor_val) = %str() and %superq(Censore_val) ne %str() %then %do;
+  %let Censor_val = &Censore_val;
+%end;
+
 %let codepath = %sysfunc(pathname(WORK));
 %put &codepath;
 options nomfile;
@@ -129,7 +146,7 @@ ods select none;
 ods output Survivalplot=SurvivalPlotData;
 proc lifetest data=&data.
 plots=survival(atrisk=&AxisValues.);
-time &Time_var. * &Censore_var.(&Censore_val.);
+time &Time_var. * &Censor_var.(&Censor_val.);
 strata &groupn. ;
 run;
 proc sort data=SurvivalPlotData(keep = Stratum) out=Stratum nodupkey;
