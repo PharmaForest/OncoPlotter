@@ -57,7 +57,8 @@
 * Update:     2025-09-01 (Bug Fix)
 * Update:	 2025-09-16 (minor change)
 * Update:	 2026-02-05 (bug fix--generate coe)
-* Update:     2026-02-23 (changed parameter names: Censore -> Censor)  
+* Update:     2026-02-23 (changed parameter names: Censore -> Censor)   
+* Update:     2026-04-03 (remove ods graphics reset)  
 
 *//*** HELP END ***/
 
@@ -178,7 +179,7 @@ end;
 run;
 ods results;
 ods select all;
-ods graphics / reset
+ods graphics /
 noborder
 noscale
 imagefmt=png
