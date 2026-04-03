@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.5.0 on 09February2026)
+# OncoPlotter (Latest version 0.5.1 on 03April2026)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -70,7 +70,7 @@ Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETES
 
  Author:     Yutaka Morioka<br>
  Date:        2025-06-24<br>
- Update Date:  2025-09-18<br>
+ Update Date:  2026-04-03<br>
 
 # %swimmer_plot</a> 
 <br>
@@ -380,6 +380,7 @@ Usage Example:
 ---
  
 ## Version history  
+0.5.1(03Apr2026)	: Modified KM plot(removed reset in ods graphics)     
 0.5.0(09Feb2026)	: Added spider plot.  A bug fixed in forest plot's gerate code function.   
 0.4.0(05Feb2026)	: Added forest plot.  A bug fixed in kaplan-meier plot's gerate code function.  
 0.3.8(29Jan2026)	: Default parameters have been changed in swimmer plot. Enhanced help information as well.    
