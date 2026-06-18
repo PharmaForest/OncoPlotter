@@ -20,13 +20,13 @@ project:
     - file: data.md
     - file: macros.md
  
-# Site options allow you to configure a themeÅfs behavior.
+# Site options allow you to configure a theme¬Åfs behavior.
 # https://mystmd.org/guide/website-templates
 site:
   template: book-theme
   title: OncoPlotter--A SAS package to create figures commonly created in oncology studies
   options:
-    # logo: pkg_image.png
+    logo: ../oncoplotter.png
     logo_text: OncoPlotter
     style: style.css
   # actions:
