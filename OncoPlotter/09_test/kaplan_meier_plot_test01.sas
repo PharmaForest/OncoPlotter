@@ -23,6 +23,7 @@ ods graphics / reset=all
 %kaplan_meier_plot();
 
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\kaplan_meier_test01.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\kaplan_meier_test01.png,
   desc   =  (%nrstr(%kaplan_meier_plot))[test01] Default parameter test , 
   outds  = TEMP.oncoplotter_test
