@@ -1,5 +1,6 @@
 # OncoPlotter (Latest version 0.5.2 on 18June2026)
-A SAS package to create figures commonly created in oncology studies  
+OncoPlotter is a SAS package to create figures commonly created in oncology studies. Please refer to [documentation](https://pharmaforest.github.io/OncoPlotter/) for detailed instruction.
+
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
 The repository is a collaborative project.
