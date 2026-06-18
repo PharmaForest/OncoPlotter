@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.5.1 on 03April2026)
+# OncoPlotter (Latest version 0.5.2 on 18June2026)
 A SAS package to create figures commonly created in oncology studies  
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
 
@@ -124,7 +124,7 @@ Purpose:     This macro generates swimmer's plot using proc sgplot with modern v
 <img width="300" alt="Image" src="./.github/SwimmerPlot_Kawaii.png" />  
 
  Author:     Ryo Nakaya<br>
- Date:        2026-01-29<br>
+ Date:        2026-05-27<br>
 
 
 # %waterfall_plot</a> 
@@ -148,8 +148,8 @@ Parameters:
   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
   groupLabel=     Character variable used for group labels (e.g., BOR term)
   groupN=         List of numeric group values (e.g., 1 2 3)
-  groupC=         List of character group labels (e.g., "CR" "PR" "SD")
-  groupColor=     Color list for group bars (e.g., red blue green)
+  groupC=         List of character group labels (e.g., CR | PR | SD)
+  groupColor=     Color list for group bars (e.g., red | blue | green)
 
   responseVar=    Numeric variable plotted on Y-axis (e.g., PCHG[percent change in tumor size])
   varWidth=       Width of var (default: 0.7)
@@ -206,7 +206,7 @@ Parameters:
 
 
  Author:     Hiroki Yamanobe<br>
- Date:        2025-10-08<br>
+ Date:        2026-05-27<br>
 
 ---
 
@@ -380,6 +380,7 @@ Usage Example:
 ---
  
 ## Version history  
+0.5.2(18June2026)	: A bug fixed in swimmer plot and waterfall plot
 0.5.1(03Apr2026)	: Modified KM plot(removed reset in ods graphics)     
 0.5.0(09Feb2026)	: Added spider plot.  A bug fixed in forest plot's gerate code function.   
 0.4.0(05Feb2026)	: Added forest plot.  A bug fixed in kaplan-meier plot's gerate code function.  
