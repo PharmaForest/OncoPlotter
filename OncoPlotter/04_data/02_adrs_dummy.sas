@@ -1,7 +1,7 @@
 /*** HELP START ***//*
 
- ## Create dummy datasets
-   ADRS_DUMMY
+## Create dummy datasets
+ADRS_DUMMY
 
 *//*** HELP END ***/
 
@@ -69,3 +69,23 @@ data ADRS_DUMMY;
   keep STUDYID SITEID USUBJID PARAM PARAMCD PARQUAL AVISIT AVISITN ADT ADY AVAL AVALC
 	TRT01P SEX FASFL TRTSDT TRTEDT ;
 run;
+proc sort data=ADRS_DUMMY out=_TMP01 ; by USUBJID ; run ;
+data _TMP02 ;
+	set _TMP01(where=(PARAMCD="OVRLRS" and PARQUAL="IRC")) ;
+	by USUBJID ;
+	if first.USUBJID ;
+	ANL01FL="Y" ;
+	PARAM="Best Overall Response" ;
+	PARAMCD="BORIRC" ;
+	AVISIT="" ;
+	AVISITN=. ;
+	ADY=. ;
+run ;
+data ADRS_DUMMY ;
+	set ADRS_DUMMY _TMP02 ;
+run ;
+proc sort data=ADRS_DUMMY ; by USUBJID PARAMCD AVISITN ; run ;
+
+proc datasets lib=WORK ;
+	delete _TMP01 _TMP02 ;
+run ; quit ;
