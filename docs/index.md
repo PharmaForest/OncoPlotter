@@ -7,7 +7,7 @@ OncoPlotter--A SAS package to create figures commonly created in oncology studie
 ## Version Information
  
 * **Package:** OncoPlotter
-* **Version:** 0.5.2
+* **Version:** 0.5.3
 * **Generated:**  
 * **Author(s):** [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 * **Maintainer(s):** [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
@@ -79,8 +79,7 @@ The `OncoPlotter` package consists of the following content:
  
 * [`01_adsl_dummy`data](data.md#01_adsl_dummy)
 * [`02_adrs_dummy`data](data.md#02_adrs_dummy)
-* [`_02_adrs_dummy`data](data.md#_02_adrs_dummy)
-* [`_03_adtr_dummy`data](data.md#_03_adtr_dummy)
+* [`03_adtr_dummy`data](data.md#03_adtr_dummy)
  
 ### macros
  
