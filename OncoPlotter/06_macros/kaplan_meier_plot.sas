@@ -1,64 +1,126 @@
 /*** HELP START ***//*
 
-* Program:     kaplan_meier_plot.txt
-* Macro:       %kaplan_meier_plot
-*
-* Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETEST in SAS.
-*              It produces survival curves by group, displays censoring marks, and includes
-*              the number at risk at each time point on the plot.
-*
-* Features:
-*   - Optionally generates an internal example dataset (e.g., `dummy_adtte`)
-*   - Customizable group labels, colors, and line patterns
-*   - Supports plotting of censored observations
-*   - Configurable axis and display settings
-*   - Supports MFILE option to export generated SAS code
-*
-* Parameters:
-*   data=                  Input dataset name (e.g., dummy_adtte)
-*   groupn=                Numeric group variable (e.g., TRTPN)
-*   groupc=                Character group label variable (e.g., TRTP)
-*   wh=                    WHERE condition to subset data (optional)
-*   Time_var=              Time-to-event variable (e.g., AVAL)
+### Macro:
 
-*   Censor_var=           Censoring indicator variable (e.g., CNSR)
-*   Censor_val=           Value indicating censored observations (e.g., 1)
-*  (formerly) Censore_var=           Censoring indicator variable (e.g., CNSR)
-*  (formerly) Censore_val=           Value indicating censored observations (e.g., 1)
+%kaplan_meier_plot
 
-*   Title=                 Plot title (default: "Kaplan-Meier Plot")
-*   Group_color_list=      Color list for group lines (e.g., "black red blue green")
-*   Group_linepattern_list= Line pattern list for groups (e.g., "solid dash longdash dot")
-*   XLABEL=                Label for the X-axis (e.g., "Survival Time (Month)")
-*   YLABEL=                Label for the Y-axis (e.g., "Probability of Survival")
-*   AxisValues=            Tick marks for the X-axis (e.g., "0 to 16 by 2")
-*   Delete_Process_Data=   Option to delete intermediate datasets (Y/N, not used)
-*   Generate_Code=         Option to output MFILE-generated SAS code (Y/N)
-*
-* Example usage:
-*   %kaplan_meier_plot(
-*       data = dummy_adtte,
-*       groupn = TRTPN,
-*       groupc = TRTP,
-*       Time_var = AVAL,
-*       Censor_var = CNSR,
-*       Censor_val = 1,
-*       Title = %nrquote(Kaplan-Meier Curve Example),
-*       Group_color_list = %nrquote(black red blue green),
-*       Group_linepattern_list = %nrquote(solid dash longdash shortdash),
-*       XLABEL = %nrquote(Survival Time (Month)),
-*       YLABEL = %nrquote(Probability),
-*       AxisValues = %nrquote(0 to 24 by 4),
-*       Generate_Code = Y
-*   );
-*
-* Author:     Yutaka Morioka
-* First Release Date:        2025-06-24
-* Update:     2025-09-01 (Bug Fix)
-* Update:	 2025-09-16 (minor change)
-* Update:	 2026-02-05 (bug fix--generate coe)
-* Update:     2026-02-23 (changed parameter names: Censore -> Censor)   
-* Update:     2026-04-03 (remove ods graphics reset)  
+### Purpose:
+
+Creates Kaplan-Meier survival plots using `PROC LIFETEST` and `PROC SGPLOT`.
+The macro displays survival curves by group, censoring marks, and the number of
+subjects at risk at specified time points.
+
+### Parameters:
+
+#### Input data and grouping
+
+- `data` (optional, default=`dummy_adtte`) :
+	Input time-to-event analysis dataset.
+
+- `groupn` (optional, default=`TRTPN`) :
+	Numeric grouping variable used to define the survival curves.
+
+- `groupc` (optional, default=`TRTP`) :
+	Character variable containing the display label for each group.
+
+- `wh` (optional, default=blank) :
+	WHERE condition used to subset the input dataset.
+
+#### Time-to-event variables
+
+- `Time_var` (optional, default=`AVAL`) :
+	Numeric time-to-event analysis variable.
+
+- `Censor_var` (optional, default=blank) :
+	Censoring indicator variable.
+
+- `Censor_val` (optional, default=blank) :
+	Value of `Censor_var` that identifies censored observations.
+
+- `Censore_var` (deprecated, default=`CNSR`) :
+	Previous name of `Censor_var`, retained for backward compatibility. It is
+	used only when `Censor_var` is blank.
+
+- `Censore_val` (deprecated, default=`1`) :
+	Previous name of `Censor_val`, retained for backward compatibility. It is
+	used only when `Censor_val` is blank.
+
+#### Titles, axes, and style
+
+- `Title` (optional, default=`Kaplan-Meier Plot`) :
+	Title displayed above the plot.
+
+- `Group_color_list` (optional, default=`black black black black`) :
+	Space-separated list of colors used for the group survival curves.
+
+- `Group_linepattern_list` (optional, default=`solid shortdash longdash dash`) :
+	Space-separated list of line patterns used for the group survival curves.
+
+- `XLABEL` (optional, default=`Survival Time (Month)`) :
+	Label displayed on the X-axis.
+
+- `YLABEL` (optional, default=`Probability of Survival`) :
+	Label displayed on the Y-axis.
+
+- `AxisValues` (optional, default=`0 to 16 by 2`) :
+	X-axis tick specification and time points used for the number-at-risk table.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`Y`) :
+	When set to `Y`, generates the expanded SAS program code and writes it to a
+	text file in the WORK directory.
+
+### Example
+
+~~~sas
+%kaplan_meier_plot(
+	data                   = dummy_adtte,
+	groupn                 = TRTPN,
+	groupc                 = TRTP,
+	Time_var               = AVAL,
+	Censor_var             = CNSR,
+	Censor_val             = 1,
+	Title                  = %nrbquote(Kaplan-Meier Curve Example),
+	Group_color_list       = %nrbquote(black red blue green),
+	Group_linepattern_list = %nrbquote(solid dash longdash shortdash),
+	XLABEL                 = %nrbquote(Survival Time (Month)),
+	YLABEL                 = %nrbquote(Probability),
+	AxisValues             = %nrbquote(0 to 24 by 4),
+	Generate_Code          = Y
+);
+~~~
+
+### Output:
+
+- Kaplan-Meier survival plot generated by ODS Graphics
+- Number-at-risk table displayed below the survival curves
+- Intermediate datasets including `SurvivalPlotData`, `Stratum`, `tAtRisk`,
+  `atrisk`, and `SurvivalPlotData_1`
+- `kaplan_meier_plot<index>.txt`: generated SAS code when `Generate_Code=Y`
+
+### Prerequisites
+
+- SAS/STAT with `PROC LIFETEST`
+- An input dataset containing:
+	- The grouping variables specified in `groupn` and `groupc`
+	- The time-to-event variable specified in `Time_var`
+	- The censoring variable specified in `Censor_var`
+
+### Change history
+
+- 2025-06-24: First release
+- 2025-09-01: Bug fix
+- 2025-09-16: Minor change
+- 2026-02-05: Fixed generated-code output
+- 2026-02-23: Renamed `Censore_var` and `Censore_val` to `Censor_var` and
+  `Censor_val`
+- 2026-04-03: Removed `ODS GRAPHICS RESET`
+- 2026-07-30: Updated program header to markdown
+
+### Author
+
+Yutaka Morioka
 
 *//*** HELP END ***/
 

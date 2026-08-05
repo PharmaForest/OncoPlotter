@@ -191,16 +191,16 @@ and clinical events (e.g., death) for each subject using ADaM datasets.
 
 https://github.com/PharmaForest/OncoPlotter
 
-Author:     Ryo Nakaya
-Update:
-	5July2025 : First release
-	14July2025 : Added functionality of output generated SAS codes
-	23July2025 : A bug fixed and made modification to handle no groupvar
-	29Oct2025 : A bug fixed
-	2Oct2025 : A bug fixed for options of ods graphics
-	29Jan2026 : Default parameters have been changed
+Author:     Ryo Nakaya  
+Update:  
+	5July2025 : First release  
+	14July2025 : Added functionality of output generated SAS codes  
+	23July2025 : A bug fixed and made modification to handle no groupvar  
+	29Oct2025 : A bug fixed  
+	2Oct2025 : A bug fixed for options of ods graphics  
+	29Jan2026 : Default parameters have been changed  
 	27May2026 : Bug fixed for not using %sp_change. Updated program header
-
+    30July2026 : Updated program header
 
 
 *//*** HELP END ***/

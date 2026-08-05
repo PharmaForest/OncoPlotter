@@ -1,60 +1,111 @@
 /*** HELP START ***//*
 
-/*************************************************************************
-* Program:     Waterfall_Plot.sas
-* Macro:       %Waterfall_Plot
-*
-* Purpose:     This macro generates a Waterfall Plot using ADaM datasets
-*              (ADSL, ADTR, ADRS) to visualize tumor size changes from baseline.
-*
-* Features:
-*   - Plots percent change in tumor size (e.g., from baseline to nadir)
-*   - Supports grouping by Best Overall Response (BOR) or any other variable
-*   - Custom group labels, color coding, and legend display
-*   - Flexible WHERE conditions for subsetting each dataset
-*   - Customizable axis range, plot title, width, and height
-*   - Option to output SAS code
-*
-* Parameters:
-*   adrs=           Input response dataset (e.g., ADRS with BOR)
-*   adtr=           Tumor measurements dataset (e.g., ADTR with SUMDIA)
-*   adsl=           Subject-level dataset (e.g., ADSL)
-*
-*   whr_adrs=       where condition for selecting best response per subject (e.g. PARAMCD="BORIRC")
-*   whr_adtr=       where condition to select the best sum of diameters per subject (e.g. PARAMCD="SUMDIA" and ANL01FL="Y")
-*   whr_adsl=       where condition for subject-level data (e.g. FASFL="Y")
-*
-*   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
-*   groupLabel=     Character variable used for group labels (e.g., BOR term)
-*   groupN=         List of numeric group values (e.g., 1 2 3)
-*   groupC=         List of character group labels (e.g., CR | PR | SD | PD) Values must be separated by `|`.
-*   groupColor=     Color list for group bars (e.g., red | blue | green) Values must be separated by `|`.
-*
-*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
-*   varWidth=       Width of var (default: 0.7)
-*
-*   width=          Width of the plot in pixels (default: 840)
-*   height=         Height of the plot in pixels (default: 480)
-*   dpi=            DPI of the plot  (default: 300)
-*   imgPath=        Path of Image file (default: SAS Temporary Files)
-*
-*   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
-*   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
-*   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
-*   y_refline=  referrence line (e.g. -30 20)
-*
-*   Generate_Code=  Option to output generated SAS code via MFILE (Y/N)
-*
-* Example usage:
-******************************
-* Example:
+### Macro:
+
+%Waterfall_Plot
+
+### Purpose:
+
+Creates a waterfall plot using ADaM datasets (`ADSL`, `ADTR`, and `ADRS`)
+to visualize percent change in tumor size from baseline for each subject.
+
+### Parameters:
+
+#### Data inputs
+
+- `adrs` (optional, default=`ADRS`) :
+	Response dataset (e.g., ADRS containing Best Overall Response).
+	Expected variables include `USUBJID` and the variable specified in `groupVar`.
+
+- `adtr` (optional, default=`ADTR`) :
+	Tumor measurement dataset (e.g., ADTR containing sum of diameters).
+	Expected variables include `USUBJID` and the variable specified in `responseVar`.
+
+- `adsl` (optional, default=`ADSL`) :
+	Subject-level dataset (ADSL ADaM).
+	Expected variable includes `USUBJID`.
+
+- `whr_adrs` (optional, default=blank) :
+	WHERE condition applied to the response dataset.
+	For example, `PARAM="Best Overall Response"`.
+
+- `whr_adtr` (optional, default=blank) :
+	WHERE condition applied to the tumor measurement dataset.
+	For example, `PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y"`.
+
+- `whr_adsl` (optional, default=blank) :
+	WHERE condition applied to the subject-level dataset.
+	For example, `FASFL="Y"`.
+
+#### Grouping
+
+- `groupVar` (required) :
+	Numeric variable used to group subjects, such as the numeric value of Best Overall Response.
+
+- `groupLabel` (optional, default=blank) :
+	Legend title for the grouping variable.
+
+- `groupN` (required) :
+	Numeric values for the grouping variable.
+
+- `groupC` (required) :
+	Character labels corresponding to `groupN`.
+	Values must be separated by `|`.
+
+- `groupColor` (required) :
+	Colors corresponding to the groups.
+	Values must be separated by `|`.
+
+#### Response definition
+
+- `responseVar` (required) :
+	Numeric variable plotted on the y-axis, such as percent change from baseline.
+
+- `VarWidth` (optional, default=`0.7`) :
+	Width of each waterfall bar.
+
+#### Output and layout
+
+- `width` (optional, default=`840`) :
+	Width of the output graphic in pixels.
+
+- `height` (optional, default=`480`) :
+	Height of the output graphic in pixels.
+
+- `dpi` (optional, default=`300`) :
+	Resolution of the output graphic in dots per inch.
+
+- `imgPath` (optional, default=SAS temporary directory) :
+	Directory in which the image and HTML output files are written.
+
+- `title` (optional, default=blank) :
+	Title of the plot.
+
+- `ytitle` (optional, default=`Change from Baseline (%)`) :
+	Title of the y-axis.
+
+- `yvalues` (optional, default=`-100 to 100 by 20`) :
+	Y-axis tick specification.
+
+- `y_refline` (optional, default=blank) :
+	Space-separated y-axis reference-line values, such as `-30 20`.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`Y`) :
+	When set to `Y`, generates the underlying SAS program code
+	and writes it to a text file in the WORK directory.
+
+### Example
+
+~~~sas
 %Waterfall_Plot(
-	adrs      = adrs_dummy,
-	adtr      = adtr_dummy,
-	adsl      = adsl_dummy,
-	whr_adrs    = PARAM="Best Overall Response",
-	whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
-	whr_adsl    = FASFL="Y",
+	adrs         = adrs_dummy,
+	adtr         = adtr_dummy,
+	adsl         = adsl_dummy,
+	whr_adrs     = PARAM="Best Overall Response",
+	whr_adtr     = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+	whr_adsl     = FASFL="Y",
 	groupVar     = AVAL,
 	groupN       = 1 2 3 4,
 	groupC       = CR | PR | SD | PD,
@@ -62,20 +113,36 @@
 	groupColor   = green | blue | gray | red,
 	responseVar  = PCHG,
 	VarWidth     = 0.7,
-	width     = 840,
-	height    = 480,
-	dpi       = 300,
-	imgPath   = C:/temp,
-	title   = Figure 14.2.x,
-	ytitle  = Change from Baseline (%),
-	yvalues = -100 to 100 by 20,
-	y_refline=20 40,
+	width        = 840,
+	height       = 480,
+	dpi          = 300,
+	imgPath      = C:/temp,
+	title        = Figure 14.2.x,
+	ytitle       = Change from Baseline (%),
+	yvalues      = -100 to 100 by 20,
+	y_refline    = -30 20,
 	Generate_Code = Y
 );
-*
-* Author:     Hiroki Yamanobe
-* Udpate Date:       2025-10-08
-	2026-5-27: Bug fixed for not using %sp_change. Updated program header
+~~~
+
+### Prerequisites
+
+- Response data: ADRS or another response dataset
+	(`USUBJID` and the variable specified in `groupVar`)
+- Tumor measurement data: ADTR or another BDS ADaM dataset
+	(`USUBJID` and the variable specified in `responseVar`)
+- Subject-level data: ADSL ADaM dataset
+	(`USUBJID`)
+
+### URL:
+
+https://github.com/PharmaForest/OncoPlotter
+
+Author:     Hiroki Yamanobe
+Update:
+	8Oct2025 : First release
+	27May2026 : Bug fixed for not using %sp_change. Updated program header
+    30July2026 : Updated program header to markdown 
 
 
 *//*** HELP END ***/
