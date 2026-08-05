@@ -9,17 +9,17 @@
 ### Version information:
   
 - Package: OncoPlotter
-- Version: 0.5.2
-- Generated: 2026-06-18T20:15:58
+- Version: 0.5.3
+- Generated: 2026-08-05T10:05:46
 - Author(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - Maintainer(s): [Yutaka Morioka],[Hiroki Yamanobe],[Ryo Nakaya]
 - License: MIT
-- File SHA256: `F*9F42273D1E04CA7122DEC2849AF8529D5762C83663379DC0D281DEF89860D1B7` for this version
-- Content SHA256: `C*F8916AD38BBC88F209C4C7B87EFCF80607E190E4508CDC3522D3A3359C92D30D` for this version
+- File SHA256: `F*4A816DB8D883FBF4A75FBF657D01156C3753EC58AB6AD168C717AEB373153442` for this version
+- Content SHA256: `C*0E761D8EFC4B5BDBA6CC7D921A63AD832D7D5CF6DFE67541EEEF8BFB7A31EA3D` for this version
   
 ---
  
-# The `OncoPlotter` package, version: `0.5.2`;
+# The `OncoPlotter` package, version: `0.5.3`;
   
 ---
  
@@ -96,20 +96,19 @@ The `OncoPlotter` package consists of the following content:
  
 1. [`01_adsl_dummy` data ](#01adsldummy-data-1 )
 2. [`02_adrs_dummy` data ](#02adrsdummy-data-2 )
-3. [`_02_adrs_dummy` data ](#02adrsdummy-data-3 )
-4. [`_03_adtr_dummy` data ](#03adtrdummy-data-4 )
-5. [`%forest_plot()` macro ](#forestplot-macros-5 )
-6. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-6 )
-7. [`%sp_change()` macro ](#spchange-macros-7 )
-8. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-8 )
-9. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-9 )
-10. [`%sp_split_plot()` macro ](#spsplitplot-macros-10 )
-11. [`%spider_plot()` macro ](#spiderplot-macros-11 )
-12. [`%swimmer_plot()` macro ](#swimmerplot-macros-12 )
-13. [`%waterfall_plot()` macro ](#waterfallplot-macros-13 )
+3. [`03_adtr_dummy` data ](#03adtrdummy-data-3 )
+4. [`%forest_plot()` macro ](#forestplot-macros-4 )
+5. [`%kaplan_meier_plot()` macro ](#kaplanmeierplot-macros-5 )
+6. [`%sp_change()` macro ](#spchange-macros-6 )
+7. [`%sp_make_groupf_format()` macro ](#spmakegroupfformat-macros-7 )
+8. [`%sp_make_respf_format()` macro ](#spmakerespfformat-macros-8 )
+9. [`%sp_split_plot()` macro ](#spsplitplot-macros-9 )
+10. [`%spider_plot()` macro ](#spiderplot-macros-10 )
+11. [`%swimmer_plot()` macro ](#swimmerplot-macros-11 )
+12. [`%waterfall_plot()` macro ](#waterfallplot-macros-12 )
   
  
-14. [License note](#license)
+13. [License note](#license)
   
 ---
  
@@ -123,21 +122,13 @@ The `OncoPlotter` package consists of the following content:
  
 ## `02_adrs_dummy` data <a name="02adrsdummy-data-2"></a> ######
 
- ## Create dummy datasets
-   ADRS_DUMMY
-
-  
----
- 
-## `_02_adrs_dummy` data <a name="02adrsdummy-data-3"></a> ######
-
 ## Create dummy datasets
 ADRS_DUMMY
 
   
 ---
  
-## `_03_adtr_dummy` data <a name="03adtrdummy-data-4"></a> ######
+## `03_adtr_dummy` data <a name="03adtrdummy-data-3"></a> ######
 
 ## Create dummy datasets
 ADTR_DUMMY
@@ -145,154 +136,253 @@ ADTR_DUMMY
   
 ---
  
-## `%forest_plot()` macro <a name="forestplot-macros-5"></a> ######
+## `%forest_plot()` macro <a name="forestplot-macros-4"></a> ######
 
-Macro:    forest_plot
+### Macro:
 
-Purpose:  
-  Create a forest plot using PROC SGPLOT.
-  The macro draws point estimates and confidence intervals and displays
-  up to six descriptive columns on the left side using YAXISTABLE.
-  Optional reference line and code generation (mprint dump) are supported.
+%forest_plot
 
-Parameters:  
-  data            Input dataset  
-                  (default: dummy_forest_test)
+### Purpose:
 
-  out1-out6       Variable names to be displayed on the left side
-                  using YAXISTABLE (optional)
+Creates a forest plot using `PROC SGPLOT` to display point estimates and
+confidence intervals. Up to six descriptive columns can be shown on the left
+side of the plot using `YAXISTABLE`. An optional reference line and generated
+SAS code output are also supported.
 
-  marker_point    Variable for point estimate
-                  (default: estimate)
+### Parameters:
 
-  bar_left        Variable for lower confidence limit
-                  (default: lower_limit)
+#### Input data and display columns
 
-  bar_right       Variable for upper confidence limit
-                  (default: upper_limit)
+- `data` (optional, default=`dummy_forest_test`) :
+	Input dataset used to create the forest plot.
 
-  out1_label      Label for out1 column
-  out2_label      Label for out2 column
-  out3_label      Label for out3 column
-  out4_label      Label for out4 column
-  out5_label      Label for out5 column
-  out6_label      Label for out6 column
+- `out1` (optional, default=`col1`) :
+	First descriptive variable displayed on the left side of the plot.
 
-  AxisValues      X-axis values specification passed to
-                  XAXIS VALUES=()
-                  (default: 0.0 to 2.5 by 0.5)
+- `out2` - `out6` (optional, default=blank) :
+	Additional descriptive variables displayed on the left side of the plot.
 
-  refline_value   Reference line value on X-axis
-                  (default: 1)
+- `out1_label` (optional, default=`Sub Group`) :
+	Column label for `out1`.
 
-  bar_color       Color of confidence interval bars
-                  (default: black)
+- `out2_label` - `out6_label` (optional, default=blank) :
+	Column labels for `out2` through `out6`.
 
-  marker_color    Color of marker points
-                  (default: black)
+#### Point estimate and confidence interval
 
-  Generate_Code   Output expanded macro code (mprint) to a text file
-                  in the WORK directory and open it
-                  (Y/N, default: N)
+- `marker_point` (optional, default=`estimate`) :
+	Numeric variable containing the point estimate.
 
-Output:  
-  - Forest plot generated by ODS Graphics
-  - WORK.wk_forest      : plotting dataset
-  - WORK.forest_anno    : SG annotation dataset
-  - forest_plot<index>.txt (when Generate_Code=Y)
+- `bar_left` (optional, default=`lower_limit`) :
+	Numeric variable containing the lower confidence limit.
 
-Usage Example:  
-  %forest_plot(
-    data=dummy_forest_test,
-    out1=col1,
-    out2=col2,
-    out3=col3,
-    out4=col4,
-    out5=col5,
-    marker_point=estimate,
-    bar_left=lower_limit,
-    bar_right=upper_limit,
-    out1_label=%nrbquote(Sub Group),
-    out2_label=%nrbquote(n),
-    out3_label=%nrbquote(%),
-    out4_label=%nrbquote(HR),
-    out5_label=%nrbquote(HR 95 %CL),
-    AxisValues=%nrbquote(0.0 to 2.5 by 0.5),
-    refline_value=1,
-    bar_color=black,
-    marker_color=black,
-    Generate_Code=Y
-  );
+- `bar_right` (optional, default=`upper_limit`) :
+	Numeric variable containing the upper confidence limit.
 
-  
----
- 
-## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-6"></a> ######
+#### Axis and reference line
 
-* Program:     kaplan_meier_plot.txt
-* Macro:       %kaplan_meier_plot
-*
-* Purpose:     This macro generates Kaplan-Meier survival plots using PROC LIFETEST in SAS.
-*              It produces survival curves by group, displays censoring marks, and includes
-*              the number at risk at each time point on the plot.
-*
-* Features:
-*   - Optionally generates an internal example dataset (e.g., `dummy_adtte`)
-*   - Customizable group labels, colors, and line patterns
-*   - Supports plotting of censored observations
-*   - Configurable axis and display settings
-*   - Supports MFILE option to export generated SAS code
-*
-* Parameters:
-*   data=                  Input dataset name (e.g., dummy_adtte)
-*   groupn=                Numeric group variable (e.g., TRTPN)
-*   groupc=                Character group label variable (e.g., TRTP)
-*   wh=                    WHERE condition to subset data (optional)
-*   Time_var=              Time-to-event variable (e.g., AVAL)
+- `AxisValues` (optional, default=`0.0 to 2.5 by 0.5`) :
+	X-axis tick specification passed to `XAXIS VALUES=()`.
 
-*   Censor_var=           Censoring indicator variable (e.g., CNSR)
-*   Censor_val=           Value indicating censored observations (e.g., 1)
-*  (formerly) Censore_var=           Censoring indicator variable (e.g., CNSR)
-*  (formerly) Censore_val=           Value indicating censored observations (e.g., 1)
+- `refline_value` (optional, default=`1`) :
+	Value at which a vertical reference line is drawn. Leave blank to suppress
+	the reference line.
 
-*   Title=                 Plot title (default: "Kaplan-Meier Plot")
-*   Group_color_list=      Color list for group lines (e.g., "black red blue green")
-*   Group_linepattern_list= Line pattern list for groups (e.g., "solid dash longdash dot")
-*   XLABEL=                Label for the X-axis (e.g., "Survival Time (Month)")
-*   YLABEL=                Label for the Y-axis (e.g., "Probability of Survival")
-*   AxisValues=            Tick marks for the X-axis (e.g., "0 to 16 by 2")
-*   Delete_Process_Data=   Option to delete intermediate datasets (Y/N, not used)
-*   Generate_Code=         Option to output MFILE-generated SAS code (Y/N)
-*
-* Example usage:
-*   %kaplan_meier_plot(
-*       data = dummy_adtte,
-*       groupn = TRTPN,
-*       groupc = TRTP,
-*       Time_var = AVAL,
-*       Censor_var = CNSR,
-*       Censor_val = 1,
-*       Title = %nrquote(Kaplan-Meier Curve Example),
-*       Group_color_list = %nrquote(black red blue green),
-*       Group_linepattern_list = %nrquote(solid dash longdash shortdash),
-*       XLABEL = %nrquote(Survival Time (Month)),
-*       YLABEL = %nrquote(Probability),
-*       AxisValues = %nrquote(0 to 24 by 4),
-*       Generate_Code = Y
-*   );
-*
-* Author:     Yutaka Morioka
-* First Release Date:        2025-06-24
-* Update:     2025-09-01 (Bug Fix)
-* Update:	 2025-09-16 (minor change)
-* Update:	 2026-02-05 (bug fix--generate coe)
-* Update:     2026-02-23 (changed parameter names: Censore -> Censor)   
-* Update:     2026-04-03 (remove ods graphics reset)  
+#### Style
+
+- `bar_color` (optional, default=`black`) :
+	Color of the confidence interval bars.
+
+- `marker_color` (optional, default=`black`) :
+	Color of the point-estimate markers.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`N`) :
+	When set to `Y`, generates the expanded SAS program code and writes it to a
+	text file in the WORK directory.
+
+### Example
+
+~~~sas
+%forest_plot(
+	data          = dummy_forest_test,
+	out1          = col1,
+	out2          = col2,
+	out3          = col3,
+	out4          = col4,
+	out5          = col5,
+	marker_point  = estimate,
+	bar_left      = lower_limit,
+	bar_right     = upper_limit,
+	out1_label    = %nrbquote(Sub Group),
+	out2_label    = %nrbquote(n),
+	out3_label    = %nrbquote(%),
+	out4_label    = %nrbquote(HR),
+	out5_label    = %nrbquote(HR 95 %CL),
+	AxisValues    = %nrbquote(0.0 to 2.5 by 0.5),
+	refline_value = 1,
+	bar_color     = black,
+	marker_color  = black,
+	Generate_Code = Y
+);
+~~~
+
+### Output:
+
+- Forest plot generated by ODS Graphics
+- `WORK.wk_forest`: plotting dataset
+- `WORK.forest_anno`: SG annotation dataset
+- `forest_plot<index>.txt`: generated SAS code when `Generate_Code=Y`
+
+### Prerequisites
+
+- An input dataset containing:
+	- Variables specified in `out1` through `out6`, as applicable
+	- The point-estimate variable specified in `marker_point`
+	- The lower and upper confidence-limit variables specified in `bar_left`
+	  and `bar_right`
+
+### Change history
+
+- 2026-02-05: First release
+- 2026-07-30: Removed `ODS GRAPHICS RESET`, updated program header to markdown
+
+### Author
+
+Yutaka Morioka
 
   
 ---
  
-## `%sp_change()` macro <a name="spchange-macros-7"></a> ######
+## `%kaplan_meier_plot()` macro <a name="kaplanmeierplot-macros-5"></a> ######
+
+### Macro:
+
+%kaplan_meier_plot
+
+### Purpose:
+
+Creates Kaplan-Meier survival plots using `PROC LIFETEST` and `PROC SGPLOT`.
+The macro displays survival curves by group, censoring marks, and the number of
+subjects at risk at specified time points.
+
+### Parameters:
+
+#### Input data and grouping
+
+- `data` (optional, default=`dummy_adtte`) :
+	Input time-to-event analysis dataset.
+
+- `groupn` (optional, default=`TRTPN`) :
+	Numeric grouping variable used to define the survival curves.
+
+- `groupc` (optional, default=`TRTP`) :
+	Character variable containing the display label for each group.
+
+- `wh` (optional, default=blank) :
+	WHERE condition used to subset the input dataset.
+
+#### Time-to-event variables
+
+- `Time_var` (optional, default=`AVAL`) :
+	Numeric time-to-event analysis variable.
+
+- `Censor_var` (optional, default=blank) :
+	Censoring indicator variable.
+
+- `Censor_val` (optional, default=blank) :
+	Value of `Censor_var` that identifies censored observations.
+
+- `Censore_var` (deprecated, default=`CNSR`) :
+	Previous name of `Censor_var`, retained for backward compatibility. It is
+	used only when `Censor_var` is blank.
+
+- `Censore_val` (deprecated, default=`1`) :
+	Previous name of `Censor_val`, retained for backward compatibility. It is
+	used only when `Censor_val` is blank.
+
+#### Titles, axes, and style
+
+- `Title` (optional, default=`Kaplan-Meier Plot`) :
+	Title displayed above the plot.
+
+- `Group_color_list` (optional, default=`black black black black`) :
+	Space-separated list of colors used for the group survival curves.
+
+- `Group_linepattern_list` (optional, default=`solid shortdash longdash dash`) :
+	Space-separated list of line patterns used for the group survival curves.
+
+- `XLABEL` (optional, default=`Survival Time (Month)`) :
+	Label displayed on the X-axis.
+
+- `YLABEL` (optional, default=`Probability of Survival`) :
+	Label displayed on the Y-axis.
+
+- `AxisValues` (optional, default=`0 to 16 by 2`) :
+	X-axis tick specification and time points used for the number-at-risk table.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`Y`) :
+	When set to `Y`, generates the expanded SAS program code and writes it to a
+	text file in the WORK directory.
+
+### Example
+
+~~~sas
+%kaplan_meier_plot(
+	data                   = dummy_adtte,
+	groupn                 = TRTPN,
+	groupc                 = TRTP,
+	Time_var               = AVAL,
+	Censor_var             = CNSR,
+	Censor_val             = 1,
+	Title                  = %nrbquote(Kaplan-Meier Curve Example),
+	Group_color_list       = %nrbquote(black red blue green),
+	Group_linepattern_list = %nrbquote(solid dash longdash shortdash),
+	XLABEL                 = %nrbquote(Survival Time (Month)),
+	YLABEL                 = %nrbquote(Probability),
+	AxisValues             = %nrbquote(0 to 24 by 4),
+	Generate_Code          = Y
+);
+~~~
+
+### Output:
+
+- Kaplan-Meier survival plot generated by ODS Graphics
+- Number-at-risk table displayed below the survival curves
+- Intermediate datasets including `SurvivalPlotData`, `Stratum`, `tAtRisk`,
+  `atrisk`, and `SurvivalPlotData_1`
+- `kaplan_meier_plot<index>.txt`: generated SAS code when `Generate_Code=Y`
+
+### Prerequisites
+
+- SAS/STAT with `PROC LIFETEST`
+- An input dataset containing:
+	- The grouping variables specified in `groupn` and `groupc`
+	- The time-to-event variable specified in `Time_var`
+	- The censoring variable specified in `Censor_var`
+
+### Change history
+
+- 2025-06-24: First release
+- 2025-09-01: Bug fix
+- 2025-09-16: Minor change
+- 2026-02-05: Fixed generated-code output
+- 2026-02-23: Renamed `Censore_var` and `Censore_val` to `Censor_var` and
+  `Censor_val`
+- 2026-04-03: Removed `ODS GRAPHICS RESET`
+- 2026-07-30: Updated program header to markdown
+
+### Author
+
+Yutaka Morioka
+
+  
+---
+ 
+## `%sp_change()` macro <a name="spchange-macros-6"></a> ######
 
 This is internal utility macro previously used in `%swimmer_plot` and `%waterfall_plot` until v0.5.1, but no longer used.
 
@@ -305,7 +395,7 @@ Change separater of | to "","" (e.g. CR | PR | SD   ->   "CR","PR","SD")
   
 ---
  
-## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-8"></a> ######
+## `%sp_make_groupf_format()` macro <a name="spmakegroupfformat-macros-7"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
 Purpose:
@@ -323,7 +413,7 @@ Create format for groupvar (e.g.
   
 ---
  
-## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-9"></a> ######
+## `%sp_make_respf_format()` macro <a name="spmakerespfformat-macros-8"></a> ######
 
 This is internal utility macro used in `%swimmer_plot`.
 Purpose:
@@ -341,7 +431,7 @@ Create format for response (e.g.
   
 ---
  
-## `%sp_split_plot()` macro <a name="spsplitplot-macros-10"></a> ######
+## `%sp_split_plot()` macro <a name="spsplitplot-macros-9"></a> ######
 
 This is internal macro used in `%swimmer_plot`.
 This macro is main functionality including sgplot.
@@ -351,90 +441,118 @@ This macro is main functionality including sgplot.
   
 ---
  
-## `%spider_plot()` macro <a name="spiderplot-macros-11"></a> ######
+## `%spider_plot()` macro <a name="spiderplot-macros-10"></a> ######
 
+### Macro:
 
-Macro:    spider_plot
+%spider_plot
 
-Purpose:  
-  Create a spider (subject profile) plot using PROC SGPLOT.
-  The macro draws a series line (with markers) for each subject across
-  the specified X variable (e.g., study day) and Y variable (e.g., percent change).
-  Optional reference lines, custom axis labels/values, and code generation
-  (mprint dump) are supported.
-  A dummy input dataset is created within the macro for demonstration.
+### Purpose:
 
-Parameters:  
-  data               Input dataset  
-                     (default: dummy_spider)
+Creates a spider plot (subject profile plot) using `PROC SGPLOT`.
+The macro draws a series line with markers for each subject across the specified
+X and Y variables. Optional reference lines, subject categories, axis settings,
+and generated SAS code output are supported.
 
-  xvar               X variable for the horizontal axis
-                     (default: ADY)
+A dummy input dataset is created within the macro for demonstration.
 
-  yvar               Y variable for the vertical axis
-                     (default: PCHG)
+### Parameters:
 
-  subject_var        Subject identifier used as GROUP= for the series
-                     (default: SUBJID)
+#### Input data and variables
 
-  subject_category   Optional category variable intended for color control
-                     via GROUPLC=/GROUPMC= in the SERIES statement
-                     (default: BOR)
+- `data` (optional, default=`dummy_spider`) :
+	Input dataset.
 
-  xaxis_label        X-axis label
-                     (default: Days)
+- `xvar` (optional, default=`ADY`) :
+	Variable displayed on the X-axis, such as analysis day.
 
-  xaxis_values       X-axis values specification passed to
-                     XAXIS VALUES=()
-                     (default: 0 43 85 127 169 191 213 235)
+- `yvar` (optional, default=`PCHG`) :
+	Variable displayed on the Y-axis, such as percent change from baseline.
 
-  yaxis_label        Y-axis label
-                     (default: Change rate from baseline (%))
+- `subject_var` (optional, default=`SUBJID`) :
+	Subject identifier used as the `GROUP=` variable in the `SERIES` statement.
 
-  yaxis_values       Y-axis values specification passed to
-                     YAXIS VALUES=()
-                     (default: -100 -75 -50 -30 0 20 50 75 100)
+- `subject_category` (optional, default=`BOR`) :
+	Category variable used with `GROUPLC=` and `GROUPMC=` to control the line and
+	marker colors. Leave blank when category-based coloring is not required.
 
-  datacontrastcolors Color list for group lines/markers passed to
-                     STYLEATTRS DATACONTRASTCOLORS=()
-                     (default: Blue Red Green Yellow)
+#### Axes and appearance
 
-  refline_value      Reference line value(s) on Y-axis
-                     (default: 0 20 -30)
+- `xaxis_label` (optional, default=`Days`) :
+	Label displayed on the X-axis.
 
-  curvelabel         Display curve labels on the series lines
-                     (Y/N, default: Y)
+- `xaxis_values` (optional, default=`0 43 85 127 169 191 213 235`) :
+	Value specification passed to `XAXIS VALUES=()`.
 
-  Generate_Code      Output expanded macro code (mprint) to a text file
-                     in the WORK directory and open it
-                     (Y/N, default: N)
+- `yaxis_label` (optional, default=`Change rate from baseline (%)`) :
+	Label displayed on the Y-axis.
 
-Output:  
-  - Spider plot generated by ODS Graphics
-  - WORK.dummy_spider : demonstration dataset created within the macro
-  - spider_plot<index>.txt (when Generate_Code=Y)
+- `yaxis_values` (optional, default=`-100 -75 -50 -30 0 20 50 75 100`) :
+	Value specification passed to `YAXIS VALUES=()`.
 
-Usage Example:  
-  %spider_plot(
-    data = dummy_spider,
-    xvar = ADY,
-    yvar = PCHG,
-    subject_var = SUBJID,
-    subject_category = BOR,
-    xaxis_label = %nrbquote(Days),
-    xaxis_values = %nrbquote(0 43 85 127 169 191 213 235),
-    yaxis_label = %nrbquote(Change rate from baseline (%)),
-    yaxis_values = %nrbquote(-100 -75 -50 -30 0 20 50 75 100),
-    datacontrastcolors = %nrbquote(Blue Red Green Yellow),
-    refline_value = 0 20 -30,
-    curvelabel = Y,
-    Generate_Code = N
-  );
+- `datacontrastcolors` (optional, default=`Blue Red Green Yellow`) :
+	Space-separated color list passed to `STYLEATTRS DATACONTRASTCOLORS=()`.
+
+- `refline_value` (optional, default=`0 20 -30`) :
+	One or more Y-axis values at which horizontal reference lines are displayed.
+	Leave blank to suppress reference lines.
+
+- `curvelabel` (optional, default=`Y`) :
+	When set to `Y`, displays curve labels on the subject series.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`N`) :
+	When set to `Y`, generates the expanded SAS program code, writes it to a text
+	file in the WORK directory, and opens the file when supported.
+
+### Example
+
+~~~sas
+%spider_plot(
+	data               = dummy_spider,
+	xvar               = ADY,
+	yvar               = PCHG,
+	subject_var        = SUBJID,
+	subject_category   = BOR,
+	xaxis_label        = %nrbquote(Days),
+	xaxis_values       = %nrbquote(0 43 85 127 169 191 213 235),
+	yaxis_label        = %nrbquote(Change rate from baseline (%)),
+	yaxis_values       = %nrbquote(-100 -75 -50 -30 0 20 50 75 100),
+	datacontrastcolors = %nrbquote(Blue Red Green Yellow),
+	refline_value      = 0 20 -30,
+	curvelabel         = Y,
+	Generate_Code      = N
+);
+~~~
+
+### Output:
+
+- Spider plot generated by ODS Graphics
+- `WORK.dummy_spider`: demonstration dataset created within the macro
+- `spider_plot<index>.txt`: generated SAS code when `Generate_Code=Y`
+
+### Prerequisites
+
+- SAS with ODS Graphics and `PROC SGPLOT`
+- An input dataset containing:
+	- The variables specified in `xvar` and `yvar`
+	- The subject identifier specified in `subject_var`
+	- The category variable specified in `subject_category`, when provided
+
+### Change history
+
+- 2026-02-09: First release
+- 2026-07-30:  `ODS GRAPHICS RESET`, updated program header to markdown
+
+### Author
+
+Yutaka Morioka
 
   
 ---
  
-## `%swimmer_plot()` macro <a name="swimmerplot-macros-12"></a> ######
+## `%swimmer_plot()` macro <a name="swimmerplot-macros-11"></a> ######
 
 ### Macro:
 
@@ -627,78 +745,129 @@ and clinical events (e.g., death) for each subject using ADaM datasets.
 
 https://github.com/PharmaForest/OncoPlotter
 
-Author:     Ryo Nakaya
-Update:
-	5July2025 : First release
-	14July2025 : Added functionality of output generated SAS codes
-	23July2025 : A bug fixed and made modification to handle no groupvar
-	29Oct2025 : A bug fixed
-	2Oct2025 : A bug fixed for options of ods graphics
-	29Jan2026 : Default parameters have been changed
+Author:     Ryo Nakaya  
+Update:  
+	5July2025 : First release  
+	14July2025 : Added functionality of output generated SAS codes  
+	23July2025 : A bug fixed and made modification to handle no groupvar  
+	29Oct2025 : A bug fixed  
+	2Oct2025 : A bug fixed for options of ods graphics  
+	29Jan2026 : Default parameters have been changed  
 	27May2026 : Bug fixed for not using %sp_change. Updated program header
-
+    30July2026 : Updated program header
 
 
   
 ---
  
-## `%waterfall_plot()` macro <a name="waterfallplot-macros-13"></a> ######
+## `%waterfall_plot()` macro <a name="waterfallplot-macros-12"></a> ######
 
-/*************************************************************************
-* Program:     Waterfall_Plot.sas
-* Macro:       %Waterfall_Plot
-*
-* Purpose:     This macro generates a Waterfall Plot using ADaM datasets
-*              (ADSL, ADTR, ADRS) to visualize tumor size changes from baseline.
-*
-* Features:
-*   - Plots percent change in tumor size (e.g., from baseline to nadir)
-*   - Supports grouping by Best Overall Response (BOR) or any other variable
-*   - Custom group labels, color coding, and legend display
-*   - Flexible WHERE conditions for subsetting each dataset
-*   - Customizable axis range, plot title, width, and height
-*   - Option to output SAS code
-*
-* Parameters:
-*   adrs=           Input response dataset (e.g., ADRS with BOR)
-*   adtr=           Tumor measurements dataset (e.g., ADTR with SUMDIA)
-*   adsl=           Subject-level dataset (e.g., ADSL)
-*
-*   whr_adrs=       where condition for selecting best response per subject (e.g. PARAMCD="BORIRC")
-*   whr_adtr=       where condition to select the best sum of diameters per subject (e.g. PARAMCD="SUMDIA" and ANL01FL="Y")
-*   whr_adsl=       where condition for subject-level data (e.g. FASFL="Y")
-*
-*   groupVar=       Numeric variable used for grouping subjects (e.g., based on BOR)
-*   groupLabel=     Character variable used for group labels (e.g., BOR term)
-*   groupN=         List of numeric group values (e.g., 1 2 3)
-*   groupC=         List of character group labels (e.g., CR | PR | SD | PD) Values must be separated by `|`.
-*   groupColor=     Color list for group bars (e.g., red | blue | green) Values must be separated by `|`.
-*
-*   responseVar=    Numeric variable plotted on Y-axis (e.g., percent change in tumor size)
-*   varWidth=       Width of var (default: 0.7)
-*
-*   width=          Width of the plot in pixels (default: 840)
-*   height=         Height of the plot in pixels (default: 480)
-*   dpi=            DPI of the plot  (default: 300)
-*   imgPath=        Path of Image file (default: SAS Temporary Files)
-*
-*   title=          Title of the plot (e.g., "Waterfall Plot of Tumor Shrinkage")
-*   ytitle=         Label for the Y-axis (e.g., "Change from Baseline (%)")
-*   yvalues=        Range and increment for the Y-axis (e.g., -100 to 100 by 20)
-*   y_refline=  referrence line (e.g. -30 20)
-*
-*   Generate_Code=  Option to output generated SAS code via MFILE (Y/N)
-*
-* Example usage:
-******************************
-* Example:
+### Macro:
+
+%Waterfall_Plot
+
+### Purpose:
+
+Creates a waterfall plot using ADaM datasets (`ADSL`, `ADTR`, and `ADRS`)
+to visualize percent change in tumor size from baseline for each subject.
+
+### Parameters:
+
+#### Data inputs
+
+- `adrs` (optional, default=`ADRS`) :
+	Response dataset (e.g., ADRS containing Best Overall Response).
+	Expected variables include `USUBJID` and the variable specified in `groupVar`.
+
+- `adtr` (optional, default=`ADTR`) :
+	Tumor measurement dataset (e.g., ADTR containing sum of diameters).
+	Expected variables include `USUBJID` and the variable specified in `responseVar`.
+
+- `adsl` (optional, default=`ADSL`) :
+	Subject-level dataset (ADSL ADaM).
+	Expected variable includes `USUBJID`.
+
+- `whr_adrs` (optional, default=blank) :
+	WHERE condition applied to the response dataset.
+	For example, `PARAM="Best Overall Response"`.
+
+- `whr_adtr` (optional, default=blank) :
+	WHERE condition applied to the tumor measurement dataset.
+	For example, `PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y"`.
+
+- `whr_adsl` (optional, default=blank) :
+	WHERE condition applied to the subject-level dataset.
+	For example, `FASFL="Y"`.
+
+#### Grouping
+
+- `groupVar` (required) :
+	Numeric variable used to group subjects, such as the numeric value of Best Overall Response.
+
+- `groupLabel` (optional, default=blank) :
+	Legend title for the grouping variable.
+
+- `groupN` (required) :
+	Numeric values for the grouping variable.
+
+- `groupC` (required) :
+	Character labels corresponding to `groupN`.
+	Values must be separated by `|`.
+
+- `groupColor` (required) :
+	Colors corresponding to the groups.
+	Values must be separated by `|`.
+
+#### Response definition
+
+- `responseVar` (required) :
+	Numeric variable plotted on the y-axis, such as percent change from baseline.
+
+- `VarWidth` (optional, default=`0.7`) :
+	Width of each waterfall bar.
+
+#### Output and layout
+
+- `width` (optional, default=`840`) :
+	Width of the output graphic in pixels.
+
+- `height` (optional, default=`480`) :
+	Height of the output graphic in pixels.
+
+- `dpi` (optional, default=`300`) :
+	Resolution of the output graphic in dots per inch.
+
+- `imgPath` (optional, default=SAS temporary directory) :
+	Directory in which the image and HTML output files are written.
+
+- `title` (optional, default=blank) :
+	Title of the plot.
+
+- `ytitle` (optional, default=`Change from Baseline (%)`) :
+	Title of the y-axis.
+
+- `yvalues` (optional, default=`-100 to 100 by 20`) :
+	Y-axis tick specification.
+
+- `y_refline` (optional, default=blank) :
+	Space-separated y-axis reference-line values, such as `-30 20`.
+
+#### Code generation
+
+- `Generate_Code` (optional, default=`Y`) :
+	When set to `Y`, generates the underlying SAS program code
+	and writes it to a text file in the WORK directory.
+
+### Example
+
+~~~sas
 %Waterfall_Plot(
-	adrs      = adrs_dummy,
-	adtr      = adtr_dummy,
-	adsl      = adsl_dummy,
-	whr_adrs    = PARAM="Best Overall Response",
-	whr_adtr    = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
-	whr_adsl    = FASFL="Y",
+	adrs         = adrs_dummy,
+	adtr         = adtr_dummy,
+	adsl         = adsl_dummy,
+	whr_adrs     = PARAM="Best Overall Response",
+	whr_adtr     = PARAM="Sum of Diameters" and PARQUAL="IRC" and TRGRPID="TARGET" and ANL01FL="Y",
+	whr_adsl     = FASFL="Y",
 	groupVar     = AVAL,
 	groupN       = 1 2 3 4,
 	groupC       = CR | PR | SD | PD,
@@ -706,20 +875,36 @@ Update:
 	groupColor   = green | blue | gray | red,
 	responseVar  = PCHG,
 	VarWidth     = 0.7,
-	width     = 840,
-	height    = 480,
-	dpi       = 300,
-	imgPath   = C:/temp,
-	title   = Figure 14.2.x,
-	ytitle  = Change from Baseline (%),
-	yvalues = -100 to 100 by 20,
-	y_refline=20 40,
+	width        = 840,
+	height       = 480,
+	dpi          = 300,
+	imgPath      = C:/temp,
+	title        = Figure 14.2.x,
+	ytitle       = Change from Baseline (%),
+	yvalues      = -100 to 100 by 20,
+	y_refline    = -30 20,
 	Generate_Code = Y
 );
-*
-* Author:     Hiroki Yamanobe
-* Udpate Date:       2025-10-08
-	2026-5-27: Bug fixed for not using %sp_change. Updated program header
+~~~
+
+### Prerequisites
+
+- Response data: ADRS or another response dataset
+	(`USUBJID` and the variable specified in `groupVar`)
+- Tumor measurement data: ADTR or another BDS ADaM dataset
+	(`USUBJID` and the variable specified in `responseVar`)
+- Subject-level data: ADSL ADaM dataset
+	(`USUBJID`)
+
+### URL:
+
+https://github.com/PharmaForest/OncoPlotter
+
+Author:     Hiroki Yamanobe
+Update:
+	8Oct2025 : First release
+	27May2026 : Bug fixed for not using %sp_change. Updated program header
+    30July2026 : Updated program header to markdown 
 
 
   
