@@ -42,6 +42,7 @@ This makes it especially useful for both beginners and advanced users in the onc
   - Bars are grouped and color-coded by response or treatment group ^{newline}
   - Includes threshold lines for PR/PD classification ^{newline}
   - Suitable for visualizing best overall response ^{newline}
+ ^{newline}
 
 - %forest_plot : ^{newline}
   - Create a forest plot using `PROC SGPLOT`. ^{newline}
