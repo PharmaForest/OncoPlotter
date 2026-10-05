@@ -1,4 +1,4 @@
-# OncoPlotter (Latest version 0.5.3 on 5August2026)
+# OncoPlotter (Latest version 0.5.4 on 5October2026)
 OncoPlotter is a SAS package to create figures commonly created in oncology studies. Please refer to [documentation](https://pharmaforest.github.io/OncoPlotter/) for detailed instruction.
 
 ![OncoPlotter](./OncoPlotter_Logo_small.png)  
@@ -381,6 +381,7 @@ Usage Example:
 ---
  
 ## Version history  
+0.5.4(5October2026)	: No changes in macros. Added tests for spider plot.     
 0.5.3(5August2026)	: Header updated to markdown for all macros. Removed reset in ods graphics in forest plot.   
 0.5.2(18June2026)	: A bug fixed in swimmer plot and waterfall plot  
 0.5.1(03Apr2026)	: Modified KM plot(removed reset in ods graphics)     
