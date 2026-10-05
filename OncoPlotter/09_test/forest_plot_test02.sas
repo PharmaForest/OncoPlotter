@@ -11,13 +11,13 @@
 %loadPackage(valivali)
 %set_tmp_lib(lib=TEMP, winpath=C:\Temp, otherpath=/tmp, newfolder=oncoplotter)
 
-ods listing gpath="C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output"; /*‚±‚Ì‚Ü‚Ü*/
+ods listing gpath="C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output"; 
 
 ods graphics / reset=all
                    imagename="forest_test02"
                    imagefmt=png
                    width=300px
-                   height=300px;/*forest_plot‚Ì’†‚Ìİ’è‚Åã‘‚«‚³‚ê‚é€–Ú‚ ‚èiimagename‚Í¶‚«‚éj*/
+                   height=300px;
 
 /*test data*/
 data forest_data_test;
@@ -86,6 +86,7 @@ run;
 
 /* Assert graph*/
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\forest_test01.png,
  gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\forest_test02.png,
   desc   =  (%nrstr(%forest_plot))[test02] Test with more parameters , 
   outds  = TEMP.oncoplotter_test

@@ -46,6 +46,7 @@ ods graphics / reset=all
 
 /* Assert graph */
 %mp_assertgraph(
+gpath1 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\expected\forest_test01.png,
 gpath2 = C:\Temp\SAS_PACKAGES\packages\oncoplotter\validation\output\forest_test01.png,
   desc   =  (%nrstr(%forest_plot))[test01] Default parameter test , 
   outds  = TEMP.oncoplotter_test
